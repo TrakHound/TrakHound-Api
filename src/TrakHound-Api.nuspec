@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>TrakHound-Api</id>
+    <version>$version$</version>
+    <title>TrakHound Api</title>
+    <authors>TrakHound</authors>
+    <owners>TrakHound</owners>
+    <licenseUrl>https://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>.NET Client library for accessing the TrakHound API. Access MTConnect data using TrakHound to view processed manufacturing data from CNC equipment.</description>
+    <releaseNotes>Initial Release</releaseNotes>
+    <copyright>© 2017 TrakHound Inc., All Rights Reserved</copyright>
+    <tags>trakhound mtconnect cnc iiot</tags>
+  </metadata>
+</package>

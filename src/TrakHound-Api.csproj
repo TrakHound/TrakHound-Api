@@ -44,6 +44,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -54,6 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="v2\Database.cs" />
     <Compile Include="v2\Data\Agent.cs" />
     <Compile Include="v2\Data\AgentDefinition.cs" />
     <Compile Include="v2\Data\Component.cs" />
@@ -76,6 +78,7 @@
     <Compile Include="v2\DataFilter.cs" />
     <Compile Include="v2\IDatabaseConfiguration.cs" />
     <Compile Include="v2\IDatabaseModule.cs" />
+    <Compile Include="v2\IRestModule.cs" />
     <Compile Include="v2\Lists.cs" />
     <Compile Include="v2\Streams\Data\AgentDefinitionData.cs" />
     <Compile Include="v2\Streams\Data\ComponentDefinitionData.cs" />
@@ -102,6 +105,9 @@
     <None Include="v2\Samples\README.md" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>if exist $(ProjectDir)nuget.exe $(ProjectDir)nuget pack $(ProjectPath) -properties Configuration=Release</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
