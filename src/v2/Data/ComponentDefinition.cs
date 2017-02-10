@@ -13,7 +13,7 @@ namespace TrakHound.Api.v2.Data
         public string DeviceId { get; set; }
 
         [JsonProperty("agent_instance_id")]
-        public string AgentInstanceId { get; set; }
+        public long AgentInstanceId { get; set; }
 
         [JsonProperty("parent_id")]
         public string ParentId { get; set; }

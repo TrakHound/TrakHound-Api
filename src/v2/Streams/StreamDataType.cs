@@ -9,6 +9,7 @@ namespace TrakHound.Api.v2.Streams
     {
         UNKNOWN,
 
+        CONNECTION_DEFINITION,
         AGENT_DEFINITION,
         DEVICE_DEFINITION,
         COMPONENT_DEFINITION,

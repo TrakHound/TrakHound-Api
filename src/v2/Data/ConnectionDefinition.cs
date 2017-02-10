@@ -7,15 +7,9 @@ using Newtonsoft.Json;
 
 namespace TrakHound.Api.v2.Data
 {
-    public class DataItemDefinition : DataItem
+    public class ConnectionDefinition : Connection
     {
         [JsonProperty("device_id")]
         public string DeviceId { get; set; }
-
-        [JsonProperty("agent_instance_id")]
-        public long AgentInstanceId { get; set; }
-
-        [JsonProperty("parent_id")]
-        public string ParentId { get; set; }
     }
 }

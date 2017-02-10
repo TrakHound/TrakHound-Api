@@ -25,6 +25,11 @@ namespace TrakHound.Api.v2
         #region "Read"
 
         /// <summary>
+        /// Read the ConnectionDefinition from the database
+        /// </summary>
+        ConnectionDefinition ReadConnection(string deviceId);
+
+        /// <summary>
         /// Read the most current AgentDefintion from the database
         /// </summary>
         AgentDefinition ReadAgent(string deviceId);
@@ -52,6 +57,11 @@ namespace TrakHound.Api.v2
         #endregion
 
         #region "Write"
+
+        /// <summary>
+        /// Write ConnectionDefintions to the database
+        /// </summary>
+        bool Write(List<ConnectionDefinitionData> definitions);
 
         /// <summary>
         /// Write AgentDefintions to the database

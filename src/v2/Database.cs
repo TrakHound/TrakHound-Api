@@ -125,6 +125,16 @@ namespace TrakHound.Api.v2
         #region "Read"
 
         /// <summary>
+        /// Read the ConnectionDefintion from the database
+        /// </summary>
+        public static ConnectionDefinition ReadConnection(string deviceId)
+        {
+            if (module != null) return module.ReadConnection(deviceId);
+
+            return null;
+        }
+
+        /// <summary>
         /// Read the most current AgentDefintion from the database
         /// </summary>
         public static AgentDefinition ReadAgent(string deviceId)
@@ -177,6 +187,16 @@ namespace TrakHound.Api.v2
         #endregion
 
         #region "Write"
+
+        /// <summary>
+        /// Write ConnectionDefinitions to the database
+        /// </summary>
+        public static bool Write(List<ConnectionDefinitionData> definitions)
+        {
+            if (module != null) return module.Write(definitions);
+
+            return false;
+        }
 
         /// <summary>
         /// Write AgentDefintions to the database

@@ -18,7 +18,7 @@ namespace TrakHound.Api.v2.Data
         public DateTime Timestamp { get; set; }
 
         [JsonProperty("agent_instance_id")]
-        public string AgentInstanceId { get; set; }
+        public long AgentInstanceId { get; set; }
 
         [JsonProperty("id")]
         public string Id { get; set; }
