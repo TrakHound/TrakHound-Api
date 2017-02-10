@@ -60,6 +60,8 @@
     <Compile Include="v2\Data\AgentDefinition.cs" />
     <Compile Include="v2\Data\Component.cs" />
     <Compile Include="v2\Data\ComponentDefinition.cs" />
+    <Compile Include="v2\Data\Connection.cs" />
+    <Compile Include="v2\Data\ConnectionDefinition.cs" />
     <Compile Include="v2\Data\DataItem.cs" />
     <Compile Include="v2\Data\DataItemDefinition.cs" />
     <Compile Include="v2\Data\DataItemInfo.cs" />
@@ -82,6 +84,7 @@
     <Compile Include="v2\Lists.cs" />
     <Compile Include="v2\Streams\Data\AgentDefinitionData.cs" />
     <Compile Include="v2\Streams\Data\ComponentDefinitionData.cs" />
+    <Compile Include="v2\Streams\Data\ConnectionDefinitionData.cs" />
     <Compile Include="v2\Streams\Data\DataItemDefinitionData.cs" />
     <Compile Include="v2\Streams\Data\DeviceDefinitionData.cs" />
     <Compile Include="v2\Streams\Data\SampleData.cs" />
