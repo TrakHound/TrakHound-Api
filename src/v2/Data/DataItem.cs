@@ -40,12 +40,12 @@ namespace TrakHound.Api.v2.Data
         public string CoordinateSystem { get; set; }
 
         [JsonProperty("sample_rate")]
-        public string SampleRate { get; set; }
+        public double SampleRate { get; set; }
 
         [JsonProperty("representation")]
         public string Representation { get; set; }
 
         [JsonProperty("significant_digits")]
-        public string SignificantDigits { get; set; }
+        public int SignificantDigits { get; set; }
     }
 }

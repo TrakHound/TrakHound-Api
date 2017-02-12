@@ -22,10 +22,10 @@ namespace TrakHound.Api.v2.Data
         public string NativeName { get; set; }
 
         [JsonProperty("sample_interval")]
-        public string SampleInterval { get; set; }
+        public double SampleInterval { get; set; }
 
         [JsonProperty("sample_rate")]
-        public string SampleRate { get; set; }
+        public double SampleRate { get; set; }
 
         [JsonProperty("iso_841_class")]
         public string Iso841Class { get; set; }
