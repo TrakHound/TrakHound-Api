@@ -3,7 +3,6 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE.txt', which is part of this source code package.
 
-using System;
 using System.Collections.Generic;
 
 namespace TrakHound.Api.v2.Data
@@ -14,38 +13,38 @@ namespace TrakHound.Api.v2.Data
 
         public SampleInfo(Sample sample, DataItemInfo dataItem)
         {
-            this.DeviceId = sample.DeviceId;
-            this.Id = sample.Id;
-            this.Timestamp = sample.Timestamp;
-            this.Sequence = sample.Sequence;
-            this.AgentInstanceId = sample.AgentInstanceId;
-            this.CDATA = sample.CDATA;
-            this.Condition = sample.Condition;
-            this.DataItem = dataItem;
+            DeviceId = sample.DeviceId;
+            Id = sample.Id;
+            Timestamp = sample.Timestamp;
+            Sequence = sample.Sequence;
+            AgentInstanceId = sample.AgentInstanceId;
+            CDATA = sample.CDATA;
+            Condition = sample.Condition;
+            DataItem = dataItem;
         }
 
         public static SampleInfo Create(List<DataItemInfo> dataItemInfos, Sample sample)
         {
-            if (sample != null && !dataItemInfos.IsNullOrEmpty<DataItemInfo>())
+            if (sample != null && !dataItemInfos.IsNullOrEmpty())
             {
-                DataItemInfo dataItem = dataItemInfos.Find((Predicate<DataItemInfo>)(o => o.Id == sample.Id));
-                if (dataItem != null)
-                    return new SampleInfo(sample, dataItem);
+                var dataItem = dataItemInfos.Find(o => o.Id == sample.Id);
+                if (dataItem != null) return new SampleInfo(sample, dataItem);
             }
-            return (SampleInfo)null;
+
+            return null;
         }
 
         public static List<SampleInfo> Create(List<DataItemInfo> dataItemInfos, List<Sample> samples)
         {
-            if (samples.IsNullOrEmpty<Sample>())
-                return (List<SampleInfo>)null;
-            List<SampleInfo> sampleInfoList = new List<SampleInfo>();
+            if (samples.IsNullOrEmpty()) return null;
+
+            var sampleInfoList = new List<SampleInfo>();
             foreach (Sample sample in samples)
             {
-                SampleInfo sampleInfo = SampleInfo.Create(dataItemInfos, sample);
-                if (sampleInfo != null)
-                    sampleInfoList.Add(sampleInfo);
+                var sampleInfo = Create(dataItemInfos, sample);
+                if (sampleInfo != null) sampleInfoList.Add(sampleInfo);
             }
+
             return sampleInfoList;
         }
     }
