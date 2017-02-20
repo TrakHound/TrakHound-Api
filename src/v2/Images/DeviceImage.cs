@@ -1,4 +1,9 @@
-﻿using RestSharp;
+﻿// Copyright (c) 2017 TrakHound Inc., All Rights Reserved.
+
+// This file is subject to the terms and conditions defined in
+// file 'LICENSE.txt', which is part of this source code package.
+
+using RestSharp;
 using System.Linq;
 
 namespace TrakHound_API.v2.Images
@@ -12,9 +17,9 @@ namespace TrakHound_API.v2.Images
 
         public static Image Download(string manufacturer, string model)
         {
-            var client = new RestClient("http://dev.trakhound.com/");
+            var client = new RestClient("http://images.trakhound.com/");
 
-            var request = new RestRequest("api/images/device_images/download", Method.GET);
+            var request = new RestRequest("device_image", Method.GET);
             request.AddParameter("manufacturer", manufacturer);
             if (!string.IsNullOrEmpty(model)) request.AddParameter("model", model);
 

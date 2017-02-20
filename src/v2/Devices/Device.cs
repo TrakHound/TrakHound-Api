@@ -20,7 +20,7 @@ namespace TrakHound.Api.v2.Devices
             {
                 var client = new RestClient(url);
 
-                var request = new RestRequest("api/devices", Method.GET);
+                var request = new RestRequest("devices", Method.GET);
                 request.AddParameter("api_key", apiKey);
                 if (!string.IsNullOrEmpty(deviceId)) request.AddParameter("device_id", deviceId);
 
