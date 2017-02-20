@@ -25,6 +25,11 @@ namespace TrakHound.Api.v2
         #region "Read"
 
         /// <summary>
+        /// Read all of the Connections available from the DataServer
+        /// </summary>
+        List<ConnectionDefinition> ReadConnections();
+
+        /// <summary>
         /// Read the ConnectionDefinition from the database
         /// </summary>
         ConnectionDefinition ReadConnection(string deviceId);

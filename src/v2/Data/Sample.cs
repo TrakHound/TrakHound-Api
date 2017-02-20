@@ -14,7 +14,7 @@ namespace TrakHound.Api.v2.Data
         public string DeviceId { get; set; }
 
         [JsonProperty("timestamp")]
-        [JsonConverter(typeof(UnixTimeJsonConverter))]
+        [JsonConverter(typeof(Json.UnixTimeConverter))]
         public DateTime Timestamp { get; set; }
 
         [JsonProperty("agent_instance_id")]

@@ -17,7 +17,7 @@ namespace TrakHound.Api.v2
 {
     public static class Database
     {
-        private static Logger logger = LogManager.GetCurrentClassLogger();
+        private static Logger log = LogManager.GetCurrentClassLogger();
 
         /// <summary>
         /// The currently loaded IDatabaseModule
@@ -31,7 +31,7 @@ namespace TrakHound.Api.v2
             var path = Path.Combine(assemblyDir, configurationPath);
             if (!string.IsNullOrEmpty(path))
             {
-                logger.Info("Reading Database Configuration File From '" + path + "'");
+                log.Info("Reading Database Configuration File From '" + path + "'");
 
                 var modules = FindModules(assemblyDir);
                 if (modules != null)
@@ -40,7 +40,7 @@ namespace TrakHound.Api.v2
                     {
                         if (module.Initialize(path))
                         {
-                            logger.Info(module.Name + " Database Module Initialize Successfully");
+                            log.Info(module.Name + " Database Module Initialize Successfully");
                             Database.module = module;
                             return true;
                         }
@@ -106,16 +106,16 @@ namespace TrakHound.Api.v2
                         }
                         catch (Exception ex)
                         {
-                            logger.Error(ex, "Module Initialization Error");
+                            log.Error(ex, "Module Initialization Error");
                         }
                     }
 
                     return modules;
                 }
             }
-            catch (ReflectionTypeLoadException ex) { logger.Error(ex); }
-            catch (UnauthorizedAccessException ex) { logger.Error(ex); }
-            catch (Exception ex) { logger.Error(ex); }
+            catch (ReflectionTypeLoadException ex) { log.Error(ex); }
+            catch (UnauthorizedAccessException ex) { log.Error(ex); }
+            catch (Exception ex) { log.Error(ex); }
 
             return null;
         }
@@ -123,6 +123,16 @@ namespace TrakHound.Api.v2
         #endregion
 
         #region "Read"
+
+        /// <summary>
+        /// Read all of the Connections available from the DataServer
+        /// </summary>
+        public static List<ConnectionDefinition> ReadConnections()
+        {
+            if (module != null) return module.ReadConnections();
+
+            return null;
+        }
 
         /// <summary>
         /// Read the ConnectionDefintion from the database

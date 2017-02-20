@@ -11,7 +11,7 @@ namespace TrakHound.Api.v2.Data
     public class Agent
     {
         [JsonProperty("timestamp")]
-        [JsonConverter(typeof(UnixTimeJsonConverter))]
+        [JsonConverter(typeof(Json.UnixTimeConverter))]
         public DateTime Timestamp { get; set; }
 
         [JsonProperty("instance_id")]

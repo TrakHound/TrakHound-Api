@@ -19,17 +19,17 @@ namespace TrakHound.Api.v2
         }
     }
 
-    public class UnixTimeJsonConverter : DateTimeConverterBase
-    {
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
-        {
-            writer.WriteRawValue(Math.Round(((DateTime)value - UnixTimeExtensions.EpochTime).TotalMilliseconds, 0).ToString());
-        }
+    //public class UnixTimeJsonConverter : DateTimeConverterBase
+    //{
+    //    public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+    //    {
+    //        writer.WriteRawValue(Math.Round(((DateTime)value - UnixTimeExtensions.EpochTime).TotalMilliseconds, 0).ToString());
+    //    }
 
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
-        {
-            if (reader.Value == null) { return null; }
-            return UnixTimeExtensions.EpochTime.AddMilliseconds((long)reader.Value);
-        }
-    }
+    //    public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+    //    {
+    //        if (reader.Value == null) { return null; }
+    //        return UnixTimeExtensions.EpochTime.AddMilliseconds((long)reader.Value);
+    //    }
+    //}
 }

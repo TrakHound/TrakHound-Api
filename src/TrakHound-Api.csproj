@@ -46,6 +46,7 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -81,6 +82,9 @@
     <Compile Include="v2\IDatabaseConfiguration.cs" />
     <Compile Include="v2\IDatabaseModule.cs" />
     <Compile Include="v2\IRestModule.cs" />
+    <Compile Include="v2\Json\Convert.cs" />
+    <Compile Include="v2\Json\StreamDataConverter.cs" />
+    <Compile Include="v2\Json\UnixTimeConverter.cs" />
     <Compile Include="v2\Lists.cs" />
     <Compile Include="v2\Streams\Data\AgentDefinitionData.cs" />
     <Compile Include="v2\Streams\Data\ComponentDefinitionData.cs" />
@@ -89,11 +93,14 @@
     <Compile Include="v2\Streams\Data\DeviceDefinitionData.cs" />
     <Compile Include="v2\Streams\Data\SampleData.cs" />
     <Compile Include="v2\UnixTime.cs" />
+    <Compile Include="v2\WCF\Client.cs" />
+    <Compile Include="v2\WCF\Message.cs" />
+    <Compile Include="v2\WCF\Server.cs" />
     <None Include="packages.config" />
     <None Include="v2\Events\events.config" />
     <None Include="v2\Images\DeviceImage.cs" />
     <None Include="v2\Images\Image.cs" />
-    <Compile Include="v2\Requests.cs" />
+    <None Include="v2\Requests.cs" />
     <None Include="v2\Samples\Functions.cs" />
     <None Include="v2\Samples\Sample.cs" />
     <None Include="v2\Samples\Container.cs" />
@@ -108,7 +115,7 @@
     <None Include="v2\Samples\README.md" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-    <PropertyGroup Condition=" '$(OS)' == 'Windows_NT' ">
+  <PropertyGroup Condition=" '$(OS)' == 'Windows_NT' ">
     <PostBuildEvent>if exist $(ProjectDir)nuget.exe $(ProjectDir)nuget pack $(ProjectPath) -properties Configuration=Release</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -49,5 +49,21 @@ namespace TrakHound.Api.v2.Streams.Data
         {
             _streamDataType = type;
         }
+
+        public SampleData Copy()
+        {
+            var sample = new SampleData();
+            sample.AgentInstanceId = AgentInstanceId;
+            sample.Timestamp = Timestamp;
+            sample.DeviceId = DeviceId;
+            sample.EntryId = EntryId;
+            sample.Id = Id;
+            sample.Sequence = Sequence;
+            sample.SetStreamDataType(StreamDataType);
+            sample.ApiKey = ApiKey;
+            sample.CDATA = CDATA;
+            sample.Condition = Condition;
+            return sample;
+        }
     }
 }

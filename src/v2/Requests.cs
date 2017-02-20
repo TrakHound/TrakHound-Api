@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using RestSharp;
 using RestSharp.Authenticators;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
 
@@ -34,13 +35,12 @@ namespace TrakHound.Api.v2
             if (!string.IsNullOrEmpty(accessToken)) request.AddQueryParameter("access_token", accessToken);
 
             // Execute Response
-            IRestResponse response = client.Execute(request);
-            Console.WriteLine(response.StatusCode);
+            var response = client.Execute(request);
             if (response.StatusCode == HttpStatusCode.OK) {
 
                 if (typeof(T) != typeof(string))
                 {
-                    return FromJson<T>(response.Content);
+                    return Json.Convert.FromJson<T>(response.Content);
                 }
                 else return (T)Convert.ChangeType(response.Content, typeof(string)); // All that just to convert to string
             }
@@ -60,7 +60,7 @@ namespace TrakHound.Api.v2
 
         private static bool Send(object obj, string resource, NetworkCredential credential, string accessToken)
         {
-            string json = ToJson(obj);
+            string json = Json.Convert.ToJson(obj);
             if (!string.IsNullOrEmpty(json))
             {
                 Console.WriteLine("JSON Size = " + json.Length);
@@ -96,45 +96,54 @@ namespace TrakHound.Api.v2
 
         #endregion
 
-        #region "Json"
+        //#region "Json"
 
-        public static T FromJson<T>(string json)
-        {
-            if (!string.IsNullOrEmpty(json))
-            {
-                try
-                {
-                    var jss = new JsonSerializerSettings();
-                    jss.DateFormatHandling = DateFormatHandling.IsoDateFormat;
-                    jss.DateParseHandling = DateParseHandling.DateTime;
-                    jss.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
-                    jss.NullValueHandling = NullValueHandling.Ignore;
+        //public static T FromJson<T>(string json)
+        //{
+        //    if (!string.IsNullOrEmpty(json))
+        //    {
+        //        try
+        //        {
+        //            var settings = new JsonSerializerSettings();
+        //            settings.DateFormatHandling = DateFormatHandling.IsoDateFormat;
+        //            settings.DateParseHandling = DateParseHandling.DateTime;
+        //            settings.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
+        //            settings.NullValueHandling = NullValueHandling.Ignore;
 
-                    return (T)JsonConvert.DeserializeObject(json, (typeof(T)), jss);
-                }
-                catch (JsonException jex) { Console.WriteLine(jex.Message); }
-                catch (Exception ex) { Console.WriteLine(ex.Message); }
-            }
+        //            return (T)JsonConvert.DeserializeObject(json, (typeof(T)), settings);
+        //        }
+        //        catch (JsonException ex) { Console.WriteLine(ex.Message); }
+        //        catch (Exception ex) { Console.WriteLine(ex.Message); }
+        //    }
 
-            return default(T);
-        }
+        //    return default(T);
+        //}
 
-        public static string ToJson(object data)
-        {
-            try
-            {
-                var jss = new JsonSerializerSettings();
-                jss.NullValueHandling = NullValueHandling.Ignore;
+        //public static string ToJson(object data) { return ToJson(data, false, null); }
 
-                return JsonConvert.SerializeObject(data, jss);
-            }
-            catch (JsonException jex) { Console.WriteLine(jex.Message); }
-            catch (Exception ex) { Console.WriteLine(ex.Message); }
+        //public static string ToJson(object data, bool indent) { return ToJson(data, indent, null); }
 
-            return null;
-        }
+        //public static string ToJson(object data, bool indent, List<JsonConverter> converters)
+        //{
+        //    try
+        //    {
+        //        var settings = new JsonSerializerSettings();
+        //        if (indent) settings.Formatting = Formatting.Indented;
+        //        settings.NullValueHandling = NullValueHandling.Ignore;
+        //        if (converters != null)
+        //        {
+        //            foreach (var converter in converters) settings.Converters.Add(converter);
+        //        }
 
-        #endregion
+        //        return JsonConvert.SerializeObject(data, settings);
+        //    }
+        //    catch (JsonException ex) { Console.WriteLine(ex.Message); }
+        //    catch (Exception ex) { Console.WriteLine(ex.Message); }
+
+        //    return null;
+        //}
+
+        //#endregion
 
     }
 }
