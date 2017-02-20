@@ -38,11 +38,18 @@ namespace TrakHound.Api.v2
                 {
                     foreach (var module in modules)
                     {
-                        if (module.Initialize(path))
+                        try
                         {
-                            log.Info(module.Name + " Database Module Initialize Successfully");
-                            Database.module = module;
-                            return true;
+                            if (module.Initialize(path))
+                            {
+                                log.Info(module.Name + " Database Module Initialize Successfully");
+                                Database.module = module;
+                                return true;
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            log.Trace(ex);
                         }
                     }
                 }

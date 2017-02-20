@@ -28,8 +28,6 @@ namespace TrakHound.Api.v2.WCF
             var binding = new NetNamedPipeBinding();
             binding.Security = security;
 
-            //var pipeFactory = new ChannelFactory<IMessage>(binding, new EndpointAddress(uri));
-
             DuplexChannelFactory<IMessage> pipeFactory =
                     new DuplexChannelFactory<IMessage>(
                     new InstanceContext(this),

@@ -46,7 +46,6 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
-    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -85,6 +84,8 @@
     <Compile Include="v2\Json\StreamDataConverter.cs" />
     <Compile Include="v2\Json\UnixTimeConverter.cs" />
     <Compile Include="v2\Lists.cs" />
+    <Compile Include="v2\Messaging\Message.cs" />
+    <Compile Include="v2\Messaging\Server.cs" />
     <Compile Include="v2\Streams\Data\AgentDefinitionData.cs" />
     <Compile Include="v2\Streams\Data\ComponentDefinitionData.cs" />
     <Compile Include="v2\Streams\Data\ConnectionDefinitionData.cs" />
@@ -92,9 +93,9 @@
     <Compile Include="v2\Streams\Data\DeviceDefinitionData.cs" />
     <Compile Include="v2\Streams\Data\SampleData.cs" />
     <Compile Include="v2\UnixTime.cs" />
-    <Compile Include="v2\WCF\Client.cs" />
-    <Compile Include="v2\WCF\Message.cs" />
-    <Compile Include="v2\WCF\Server.cs" />
+    <None Include="v2\WCF\Client.cs" />
+    <None Include="v2\WCF\Message.cs" />
+    <None Include="v2\WCF\Server.cs" />
     <None Include="packages.config" />
     <None Include="v2\Events\events.config" />
     <None Include="v2\Images\DeviceImage.cs" />
