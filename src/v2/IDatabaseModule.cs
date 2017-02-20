@@ -22,6 +22,8 @@ namespace TrakHound.Api.v2
 
         bool Initialize(string databaseConfigurationPath);
 
+        void Close();
+
         #region "Read"
 
         /// <summary>

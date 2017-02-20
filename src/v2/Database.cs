@@ -51,6 +51,21 @@ namespace TrakHound.Api.v2
             return false;
         }
 
+        public static void Close()
+        {
+            if (module != null)
+            {
+                try
+                {
+                    module.Close();
+                }
+                catch (Exception ex)
+                {
+                    log.Trace(ex);
+                }
+            }           
+        }
+
         #region "Modules"
 
         private class ModuleContainer
