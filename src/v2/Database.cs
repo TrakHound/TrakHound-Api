@@ -216,6 +216,16 @@ namespace TrakHound.Api.v2
             return null;
         }
 
+        /// <summary>
+        /// Read the Status from the database
+        /// </summary>
+        public static Status ReadStatus(string deviceId)
+        {
+            if (module != null) return module.ReadStatus(deviceId);
+
+            return null;
+        }
+
         #endregion
 
         #region "Write"
@@ -276,6 +286,16 @@ namespace TrakHound.Api.v2
         public static bool Write(List<SampleData> samples)
         {
             if (module != null) return module.Write(samples);
+
+            return false;
+        }
+
+        /// <summary>
+        /// Write Statuses to the database
+        /// </summary>
+        public static bool Write(List<StatusData> statuses)
+        {
+            if (module != null) return module.Write(statuses);
 
             return false;
         }

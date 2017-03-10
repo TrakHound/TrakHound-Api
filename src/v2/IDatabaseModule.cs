@@ -61,6 +61,11 @@ namespace TrakHound.Api.v2
         /// </summary>
         List<Sample> ReadSamples(string[] dataItemIds, string deviceId, DateTime from, DateTime to, DateTime at, long count);
 
+        /// <summary>
+        /// Read the Status from the database
+        /// </summary>
+        Status ReadStatus(string deviceId);
+
         #endregion
 
         #region "Write"
@@ -94,6 +99,11 @@ namespace TrakHound.Api.v2
         /// Write Samples to the database
         /// </summary>
         bool Write(List<SampleData> samples);
+
+        /// <summary>
+        /// Write Statuses to the database
+        /// </summary>
+        bool Write(List<StatusData> statuses);
 
         #endregion
     }

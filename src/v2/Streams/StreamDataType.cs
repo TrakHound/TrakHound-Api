@@ -16,6 +16,8 @@ namespace TrakHound.Api.v2.Streams
         DATA_ITEM_DEFINITION,
 
         ARCHIVED_SAMPLE,
-        CURRENT_SAMPLE
+        CURRENT_SAMPLE,
+
+        STATUS
     }
 }
