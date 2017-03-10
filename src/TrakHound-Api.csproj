@@ -55,6 +55,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="v2\Authentication\ApiKey.cs" />
+    <Compile Include="v2\Authentication\Token.cs" />
+    <Compile Include="v2\Authentication\User.cs" />
     <Compile Include="v2\Database.cs" />
     <Compile Include="v2\Data\Agent.cs" />
     <Compile Include="v2\Data\AgentDefinition.cs" />
@@ -69,6 +72,7 @@
     <Compile Include="v2\Data\DeviceDefinition.cs" />
     <Compile Include="v2\Data\Sample.cs" />
     <Compile Include="v2\Data\SampleInfo.cs" />
+    <Compile Include="v2\Data\Status.cs" />
     <Compile Include="v2\Devices\Device.cs" />
     <Compile Include="v2\Events\Event.cs" />
     <Compile Include="v2\Events\EventsConfiguration.cs" />
@@ -84,18 +88,17 @@
     <Compile Include="v2\Json\StreamDataConverter.cs" />
     <Compile Include="v2\Json\UnixTimeConverter.cs" />
     <Compile Include="v2\Lists.cs" />
-    <Compile Include="v2\Messaging\Message.cs" />
-    <Compile Include="v2\Messaging\Server.cs" />
+    <Compile Include="v2\Requests\Connections.cs" />
+    <Compile Include="v2\Requests\Model.cs" />
+    <Compile Include="v2\Requests\Status.cs" />
     <Compile Include="v2\Streams\Data\AgentDefinitionData.cs" />
     <Compile Include="v2\Streams\Data\ComponentDefinitionData.cs" />
     <Compile Include="v2\Streams\Data\ConnectionDefinitionData.cs" />
     <Compile Include="v2\Streams\Data\DataItemDefinitionData.cs" />
     <Compile Include="v2\Streams\Data\DeviceDefinitionData.cs" />
     <Compile Include="v2\Streams\Data\SampleData.cs" />
+    <Compile Include="v2\Streams\Data\StatusData.cs" />
     <Compile Include="v2\UnixTime.cs" />
-    <None Include="v2\WCF\Client.cs" />
-    <None Include="v2\WCF\Message.cs" />
-    <None Include="v2\WCF\Server.cs" />
     <None Include="packages.config" />
     <None Include="v2\Events\events.config" />
     <None Include="v2\Images\DeviceImage.cs" />
