@@ -29,5 +29,21 @@ namespace TrakHound.Api.v2.Data
 
         [JsonProperty("iso_841_class")]
         public string Iso841Class { get; set; }
+
+
+        [JsonProperty("manufacturer")]
+        public string Manufacturer { get; set; }
+
+        [JsonProperty("model")]
+        public string Model { get; set; }
+
+        [JsonProperty("serial_number")]
+        public string SerialNumber { get; set; }
+
+        [JsonProperty("station")]
+        public string Station { get; set; }
+
+        [JsonProperty("description")]
+        public string Description { get; set; }
     }
 }
