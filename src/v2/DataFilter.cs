@@ -22,7 +22,7 @@ namespace TrakHound.Api.v2
 
         public List<ComponentDefinition> Components { get; set; }
 
-
+        
         public DataFilter(string filter, DataItemDefinition dataItem, List<ComponentDefinition> components)
         {
             FilterString = filter;
