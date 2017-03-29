@@ -35,6 +35,10 @@ namespace TrakHound.Api.v2.Events
         [XmlIgnore]
         public DateTime Timestamp { get; set; }
 
+        [XmlIgnore]
+        public object UserObject { get; set; }
+
+
         public bool Evaluate(List<SampleInfo> samples)
         {
             if (!samples.IsNullOrEmpty())

@@ -6,6 +6,7 @@
 using System.Collections.Generic;
 using System.Xml.Serialization;
 using TrakHound.Api.v2.Data;
+using System.Linq;
 
 namespace TrakHound.Api.v2.Events
 {
@@ -35,7 +36,39 @@ namespace TrakHound.Api.v2.Events
         {
             foreach (var response in Responses)
             {
-                if (response.Evaluate(samples)) return response;
+                if (response.Evaluate(samples))
+                {
+                    // Get Latest Trigger Sample Timestamp
+                    foreach (var trigger in response.Triggers.OfType<Trigger>())
+                    {
+                        var matches = samples.FindAll(o => trigger.CheckFilter(o));
+                        if (matches != null)
+                        {
+                            foreach (var match in matches)
+                            {
+                                if (match.Timestamp > response.Timestamp) response.Timestamp = match.Timestamp;
+                            }
+                        }
+                    }
+
+                    // Get Latest Trigger Sample Timestamp
+                    foreach (var multiTrigger in response.Triggers.OfType<MultiTrigger>())
+                    {
+                        foreach (var trigger in multiTrigger.Triggers)
+                        {
+                            var matches = samples.FindAll(o => trigger.CheckFilter(o));
+                            if (matches != null)
+                            {
+                                foreach (var match in matches)
+                                {
+                                    if (match.Timestamp > response.Timestamp) response.Timestamp = match.Timestamp;
+                                }
+                            }
+                        }                 
+                    }
+
+                    return response;
+                }
             }
 
             return null;

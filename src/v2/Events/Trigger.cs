@@ -48,7 +48,7 @@ namespace TrakHound.Api.v2.Events
             return false;
         }
 
-        private bool CheckFilter(SampleInfo sample)
+        public bool CheckFilter(SampleInfo sample)
         {
             if (sample.DataItem != null)
             {
