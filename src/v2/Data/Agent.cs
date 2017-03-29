@@ -29,5 +29,11 @@ namespace TrakHound.Api.v2.Data
         [JsonProperty("test_indicator")]
         public string TestIndicator { get; set; }
     }
+
+    public class AgentDefinition : Agent
+    {
+        [JsonProperty("device_id")]
+        public string DeviceId { get; set; }
+    }
 }
 

@@ -4,6 +4,7 @@
 // file 'LICENSE.txt', which is part of this source code package.
 
 using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace TrakHound.Api.v2.Data
 {
@@ -45,5 +46,74 @@ namespace TrakHound.Api.v2.Data
 
         [JsonProperty("description")]
         public string Description { get; set; }
+    }
+
+    public class DeviceDefinition : Device
+    {
+        [JsonProperty("device_id")]
+        public string DeviceId { get; set; }
+
+        [JsonProperty("agent_instance_id")]
+        public long AgentInstanceId { get; set; }
+    }
+
+    public class DeviceModel : Device
+    {
+        [JsonProperty("components", Order = 5)]
+        public List<ComponentModel> Components { get; set; }
+
+        [JsonProperty("data_items", Order = 4)]
+        public List<DataItem> DataItems { get; set; }
+
+        public List<DataItem> GetDataItems()
+        {
+            var dataItems = new List<DataItem>();
+            if (DataItems != null) dataItems.AddRange(DataItems);
+            if (Components != null)
+            {
+                foreach (var subcomponent in Components) dataItems.AddRange(GetDataItems(subcomponent));
+            }
+
+            return dataItems;
+        }
+
+        public List<DataItem> GetDataItems(ComponentModel component)
+        {
+            var dataItems = new List<DataItem>();
+            if (component.DataItems != null) dataItems.AddRange(component.DataItems);
+            if (component.Components != null)
+            {
+                foreach (var subcomponent in component.Components) dataItems.AddRange(GetDataItems(subcomponent));
+            }
+
+            return dataItems;
+        }
+
+        public List<ComponentModel> GetComponents()
+        {
+            var components = new List<ComponentModel>();
+            if (Components != null)
+            {
+                foreach (var component in Components)
+                {
+                    components.Add(component);
+                    components.AddRange(GetComponents(component));
+                }
+            }
+
+            return components;
+        }
+
+        public List<ComponentModel> GetComponents(ComponentModel component)
+        {
+            var components = new List<ComponentModel>();
+            components.Add(component);
+            if (component.Components != null)
+            {
+                foreach (var subcomponent in component.Components) components.AddRange(GetComponents(subcomponent));
+            }
+
+            return components;
+        }
     }
 }

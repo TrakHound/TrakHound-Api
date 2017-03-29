@@ -4,6 +4,7 @@
 // file 'LICENSE.txt', which is part of this source code package.
 
 using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace TrakHound.Api.v2.Data
 {
@@ -30,4 +31,26 @@ namespace TrakHound.Api.v2.Data
         [JsonProperty("sample_rate")]
         public double SampleRate { get; set; }
     }
+
+    public class ComponentDefinition : Component
+    {
+        [JsonProperty("device_id")]
+        public string DeviceId { get; set; }
+
+        [JsonProperty("agent_instance_id")]
+        public long AgentInstanceId { get; set; }
+
+        [JsonProperty("parent_id")]
+        public string ParentId { get; set; }
+    }
+
+    public class ComponentModel : Component
+    {
+        [JsonProperty("components", Order = 5)]
+        public List<ComponentModel> Components { get; set; }
+
+        [JsonProperty("data_items", Order = 4)]
+        public List<DataItem> DataItems { get; set; }
+    }
+
 }

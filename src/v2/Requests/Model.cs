@@ -1,7 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿// Copyright (c) 2017 TrakHound Inc., All Rights Reserved.
+
+// This file is subject to the terms and conditions defined in
+// file 'LICENSE.txt', which is part of this source code package.
+
+using RestSharp;
+using TrakHound.Api.v2.Data;
 
 namespace TrakHound.Api.v2.Requests
 {
@@ -10,23 +13,23 @@ namespace TrakHound.Api.v2.Requests
         /// <summary>
         /// Request a model for a single device
         /// </summary>
-        //public static Data.Model Get(string baseUrl, string deviceId)
-        //{
-        //    var client = new RestClient(baseUrl);
-        //    var request = new RestRequest(deviceId + "/status", Method.GET);
+        public static DeviceModel Get(string baseUrl, string deviceId)
+        {
+            var client = new RestClient(baseUrl);
+            var request = new RestRequest(deviceId + "/model", Method.GET);
 
-        //    var response = client.Execute(request);
-        //    if (response != null && response.StatusCode == System.Net.HttpStatusCode.OK)
-        //    {
-        //        var json = response.Content;
-        //        if (!string.IsNullOrEmpty(json))
-        //        {
-        //            var obj = Json.Convert.FromJson<Data.Status>(json);
-        //            if (obj != null) return obj;
-        //        }
-        //    }
+            var response = client.Execute(request);
+            if (response != null && response.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+                var json = response.Content;
+                if (!string.IsNullOrEmpty(json))
+                {
+                    var obj = Json.Convert.FromJson<DeviceModel>(json);
+                    if (obj != null) return obj;
+                }
+            }
 
-        //    return null;
-        //}
+            return null;
+        }
     }
 }

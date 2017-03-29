@@ -48,4 +48,16 @@ namespace TrakHound.Api.v2.Data
         [JsonProperty("significant_digits")]
         public int SignificantDigits { get; set; }
     }
+
+    public class DataItemDefinition : DataItem
+    {
+        [JsonProperty("device_id")]
+        public string DeviceId { get; set; }
+
+        [JsonProperty("agent_instance_id")]
+        public long AgentInstanceId { get; set; }
+
+        [JsonProperty("parent_id")]
+        public string ParentId { get; set; }
+    }
 }

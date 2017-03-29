@@ -32,5 +32,11 @@ namespace TrakHound.Api.v2.Data
         [JsonProperty("condition")]
         public string Condition { get; set; }
     }
+
+    public class ReturnedSample : Sample
+    {
+        [JsonProperty("timestamp")]
+        public DateTime Timestamp { get; set; }
+    }
 }
 

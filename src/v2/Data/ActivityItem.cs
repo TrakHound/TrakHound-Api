@@ -4,12 +4,17 @@
 // file 'LICENSE.txt', which is part of this source code package.
 
 using Newtonsoft.Json;
+using System.Collections.Generic;
+
 
 namespace TrakHound.Api.v2.Data
 {
-    public class AgentDefinition : Agent
+    public class ActivityItem
     {
-        [JsonProperty("device_id")]
-        public string DeviceId { get; set; }
+        [JsonProperty("events")]
+        public List<ActivityEventItem> Events { get; set; }
+
+        [JsonProperty("paths")]
+        public List<ActivityPathItem> Paths { get; set; }
     }
 }

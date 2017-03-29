@@ -18,4 +18,10 @@ namespace TrakHound.Api.v2.Data
         [JsonProperty("port")]
         public int Port { get; set; }
     }
+
+    public class ConnectionDefinition : Connection
+    {
+        [JsonProperty("device_id")]
+        public string DeviceId { get; set; }
+    }
 }

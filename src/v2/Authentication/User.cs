@@ -45,7 +45,7 @@ namespace TrakHound.Api.v2.Authentication
 
         public static User Get(string username, string password)
         {
-            var client = new RestClient("https://api.trakhound.com");
+            var client = new RestClient(Server.BaseUrl);
             var request = new RestRequest("user", Method.GET);
 
             var authenticator = new HttpBasicAuthenticator(username, password);
