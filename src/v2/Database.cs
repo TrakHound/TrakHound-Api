@@ -177,9 +177,9 @@ namespace TrakHound.Api.v2
         }
 
         /// <summary>
-        /// Read the most current AssetDefintion from the database
+        /// Read AssetDefintions from the database
         /// </summary>
-        public static AgentDefinition ReadAssets(string deviceId, string assetId, DateTime from, DateTime to, DateTime at, long count)
+        public static List<AssetDefinition> ReadAssets(string deviceId, string assetId, DateTime from, DateTime to, DateTime at, long count)
         {
             if (module != null) return module.ReadAssets(deviceId, assetId, from, to, at, count);
 

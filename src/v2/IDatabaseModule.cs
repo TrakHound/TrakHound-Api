@@ -42,9 +42,9 @@ namespace TrakHound.Api.v2
         AgentDefinition ReadAgent(string deviceId);
 
         /// <summary>
-        /// Read the most current AssetDefintions from the database
+        /// Read AssetDefintions from the database
         /// </summary>
-        AgentDefinition ReadAssets(string deviceId, string assetId, DateTime from, DateTime to, DateTime at, long count);
+        List<AssetDefinition> ReadAssets(string deviceId, string assetId, DateTime from, DateTime to, DateTime at, long count);
 
         /// <summary>
         /// Read the ComponentDefinitions for the specified Agent Instance Id from the database
