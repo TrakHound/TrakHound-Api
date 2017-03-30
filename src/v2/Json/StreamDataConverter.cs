@@ -35,6 +35,7 @@ namespace TrakHound.Api.v2.Json
                 case "6": return new SampleData(StreamDataType.ARCHIVED_SAMPLE);
                 case "7": return new SampleData(StreamDataType.CURRENT_SAMPLE);
                 case "8": return new StatusData();
+                case "9": return new AssetDefinitionData();
             }
 
             throw new Exception("Stream Data Type not supported");

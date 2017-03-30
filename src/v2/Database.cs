@@ -177,6 +177,16 @@ namespace TrakHound.Api.v2
         }
 
         /// <summary>
+        /// Read the most current AssetDefintion from the database
+        /// </summary>
+        public static AgentDefinition ReadAssets(string deviceId, string assetId, DateTime from, DateTime to, DateTime at, long count)
+        {
+            if (module != null) return module.ReadAssets(deviceId, assetId, from, to, at, count);
+
+            return null;
+        }
+
+        /// <summary>
         /// Read the ComponentDefinitions for the specified Agent Instance Id from the database
         /// </summary>
         public static List<ComponentDefinition> ReadComponents(string deviceId, long agentInstanceId)
@@ -244,6 +254,16 @@ namespace TrakHound.Api.v2
         /// Write AgentDefintions to the database
         /// </summary>
         public static bool Write(List<AgentDefinitionData> definitions)
+        {
+            if (module != null) return module.Write(definitions);
+
+            return false;
+        }
+
+        /// <summary>
+        /// Write AssetDefintions to the database
+        /// </summary>
+        public static bool Write(List<AssetDefinitionData> definitions)
         {
             if (module != null) return module.Write(definitions);
 

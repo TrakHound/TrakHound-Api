@@ -42,6 +42,11 @@ namespace TrakHound.Api.v2
         AgentDefinition ReadAgent(string deviceId);
 
         /// <summary>
+        /// Read the most current AssetDefintions from the database
+        /// </summary>
+        AgentDefinition ReadAssets(string deviceId, string assetId, DateTime from, DateTime to, DateTime at, long count);
+
+        /// <summary>
         /// Read the ComponentDefinitions for the specified Agent Instance Id from the database
         /// </summary>
         List<ComponentDefinition> ReadComponents(string deviceId, long agentInstanceId);
@@ -79,6 +84,11 @@ namespace TrakHound.Api.v2
         /// Write AgentDefintions to the database
         /// </summary>
         bool Write(List<AgentDefinitionData> definitions);
+
+        /// <summary>
+        /// Write AssetDefintions to the database
+        /// </summary>
+        bool Write(List<AssetDefinitionData> definitions);
 
         /// <summary>
         /// Write ComponentDefintions to the database

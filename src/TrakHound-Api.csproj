@@ -65,6 +65,7 @@
     <Compile Include="v2\Data\ActivityPathItem.cs" />
     <Compile Include="v2\Data\Agent.cs" />
     <Compile Include="v2\Data\Alarm.cs" />
+    <Compile Include="v2\Data\Asset.cs" />
     <Compile Include="v2\Data\Component.cs" />
     <Compile Include="v2\Data\Connection.cs" />
     <Compile Include="v2\Data\DataItem.cs" />
@@ -99,6 +100,7 @@
     <Compile Include="v2\Requests\Status.cs" />
     <Compile Include="v2\Requests\Stream.cs" />
     <Compile Include="v2\Streams\Data\AgentDefinitionData.cs" />
+    <Compile Include="v2\Streams\Data\AssetDefinitionData.cs" />
     <Compile Include="v2\Streams\Data\ComponentDefinitionData.cs" />
     <Compile Include="v2\Streams\Data\ConnectionDefinitionData.cs" />
     <Compile Include="v2\Streams\Data\DataItemDefinitionData.cs" />
