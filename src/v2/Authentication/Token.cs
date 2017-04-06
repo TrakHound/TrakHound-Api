@@ -4,9 +4,6 @@
 // file 'LICENSE.txt', which is part of this source code package.
 
 using Newtonsoft.Json;
-using System;
-
-using Newtonsoft.Json;
 using RestSharp;
 using RestSharp.Authenticators;
 using System;
