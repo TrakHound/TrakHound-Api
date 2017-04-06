@@ -17,9 +17,6 @@ namespace TrakHound.Api.v2.Data
         [JsonConverter(typeof(Json.UnixTimeConverter))]
         public DateTime Timestamp { get; set; }
 
-        [JsonProperty("sequence")]
-        public long Sequence { get; set; }
-
         [JsonProperty("type")]
         public string Type { get; set; }
 
