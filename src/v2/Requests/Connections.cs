@@ -16,10 +16,11 @@ namespace TrakHound.Api.v2.Requests
         /// <summary>
         /// Request a list of connections from the AnalyticsServer
         /// </summary>
-        public static IEnumerable<ConnectionDefinition> Get(string baseUrl)
+        public static IEnumerable<ConnectionDefinition> Get(string baseUrl, string accessToken = null)
         {
             var client = new RestClient(baseUrl);
             var request = new RestRequest("connections", Method.GET);
+            if (!string.IsNullOrEmpty(accessToken)) request.AddQueryParameter("access_token", accessToken);
 
             var response = client.Execute(request);
             if (response != null && response.StatusCode == System.Net.HttpStatusCode.OK)
@@ -38,10 +39,11 @@ namespace TrakHound.Api.v2.Requests
         /// <summary>
         /// Request a connection for a single device
         /// </summary>
-        public static Connection Get(string baseUrl, string deviceId)
+        public static Connection Get(string baseUrl, string deviceId, string accessToken = null)
         {
             var client = new RestClient(baseUrl);
             var request = new RestRequest(deviceId + "/connection", Method.GET);
+            if (!string.IsNullOrEmpty(accessToken)) request.AddQueryParameter("access_token", accessToken);
 
             var response = client.Execute(request);
             if (response != null && response.StatusCode == System.Net.HttpStatusCode.OK)

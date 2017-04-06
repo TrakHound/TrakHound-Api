@@ -52,6 +52,21 @@ namespace TrakHound.Api.v2.Authentication
             authenticator.Authenticate(client, request);
 
             var response = client.Execute(request);
+            return GetResponse(response);
+        }
+
+        public static User Get(string token)
+        {
+            var client = new RestClient(Server.BaseUrl);
+            var request = new RestRequest("user", Method.GET);
+            request.AddQueryParameter("access_token", token);
+
+            var response = client.Execute(request);
+            return GetResponse(response);
+        }
+
+        private static User GetResponse(IRestResponse response)
+        {
             if (response != null && response.StatusCode == System.Net.HttpStatusCode.OK)
             {
                 var json = response.Content;
@@ -64,6 +79,5 @@ namespace TrakHound.Api.v2.Authentication
 
             return null;
         }
-
     }
 }

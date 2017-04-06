@@ -66,23 +66,31 @@ namespace TrakHound.Api.v2.Requests
             private Requests.Stream stream;
 
             public string BaseUrl { get; set; }
+            public string DeviceId { get; set; }
             public int Interval { get; set; }
+            public string AccessToken { get; set; }
 
             public delegate void ActivityHandler(Data.ActivityItem activity);
             public event ActivityHandler ActivityReceived;
 
-            public Stream(string baseUrl, string deviceId, int interval)
+            public Stream(string baseUrl, string deviceId, int interval, string accessToken = null)
             {
-                var uri = new Uri(baseUrl);
-                uri = new Uri(uri, deviceId + "/activity?interval=" + interval);
-
-                stream = new Requests.Stream(uri.ToString(), "{", "\r\n");
-                stream.GroupReceived += Stream_GroupReceived;
+                BaseUrl = baseUrl;
+                DeviceId = deviceId;
+                Interval = interval;
+                AccessToken = accessToken;
             }
 
             public void Start()
             {
-                if (stream != null) stream.Start();
+                var uri = new Uri(BaseUrl);
+                var query = "?interval=" + Interval;
+                if (!string.IsNullOrEmpty(AccessToken)) query += "&access_token=" + AccessToken;
+                uri = new Uri(uri, DeviceId + "/activity" + query);
+
+                stream = new Requests.Stream(uri.ToString(), "{", "\r\n");
+                stream.GroupReceived += Stream_GroupReceived;
+                stream.Start();
             }
 
             public void Stop()

@@ -15,13 +15,14 @@ namespace TrakHound.Api.v2.Requests
         /// <summary>
         /// Request Samples for a single device
         /// </summary>
-        public static List<Data.Sample> Get(string baseUrl, string deviceId, DateTime from, DateTime to, int count)
+        public static List<Data.Sample> Get(string baseUrl, string deviceId, DateTime from, DateTime to, int count, string accessToken)
         {
             var client = new RestClient(baseUrl);
             var request = new RestRequest(deviceId + "/samples", Method.GET);
             if (from > DateTime.MinValue) request.AddQueryParameter("from", from.ToString("o"));
             if (to > DateTime.MinValue) request.AddQueryParameter("to", to.ToString("o"));
             if (count > 0) request.AddQueryParameter("count", count.ToString());
+            if (!string.IsNullOrEmpty(accessToken)) request.AddQueryParameter("access_token", accessToken);
 
             var response = client.Execute(request);
             if (response != null && response.StatusCode == System.Net.HttpStatusCode.OK)
@@ -59,24 +60,24 @@ namespace TrakHound.Api.v2.Requests
 
         #region "Overloads"
 
-        public static List<Data.Sample> Get(string baseUrl, string deviceId)
+        public static List<Data.Sample> Get(string baseUrl, string deviceId, string accessToken = null)
         {
-            return Get(baseUrl, deviceId, DateTime.MinValue, DateTime.MinValue, 0);
+            return Get(baseUrl, deviceId, DateTime.MinValue, DateTime.MinValue, 0, accessToken);
         }
 
-        public static List<Data.Sample> Get(string baseUrl, string deviceId, DateTime from)
+        public static List<Data.Sample> Get(string baseUrl, string deviceId, DateTime from, string accessToken = null)
         {
-            return Get(baseUrl, deviceId, from, DateTime.MinValue, 0);
+            return Get(baseUrl, deviceId, from, DateTime.MinValue, 0, accessToken);
         }
 
-        public static List<Data.Sample> Get(string baseUrl, string deviceId, int count)
+        public static List<Data.Sample> Get(string baseUrl, string deviceId, int count, string accessToken = null)
         {
-            return Get(baseUrl, deviceId, DateTime.MinValue, DateTime.MinValue, count);
+            return Get(baseUrl, deviceId, DateTime.MinValue, DateTime.MinValue, count, accessToken);
         }
 
-        public static List<Data.Sample> Get(string baseUrl, string deviceId, DateTime from, int count)
+        public static List<Data.Sample> Get(string baseUrl, string deviceId, DateTime from, int count, string accessToken = null)
         {
-            return Get(baseUrl, deviceId, from, DateTime.MinValue, count);
+            return Get(baseUrl, deviceId, from, DateTime.MinValue, count, accessToken);
         }
 
         #endregion
@@ -89,6 +90,7 @@ namespace TrakHound.Api.v2.Requests
             public string BaseUrl { get; set; }
             public string DeviceId { get; set; }
             public int Interval { get; set; }
+            public string AccessToken { get; set; }
 
             private string[] _dataItemids;
             public string[] DataItemIds
@@ -109,18 +111,20 @@ namespace TrakHound.Api.v2.Requests
             public delegate void SampleHandler(Data.Sample sample);
             public event SampleHandler SampleReceived;
 
-            public Stream(string baseUrl, string deviceId, int interval, string[] dataItemIds = null)
+            public Stream(string baseUrl, string deviceId, int interval, string[] dataItemIds = null, string accessToken = null)
             {
                 BaseUrl = baseUrl;
                 DeviceId = deviceId;
                 Interval = interval;
                 DataItemIds = dataItemIds;
+                AccessToken = accessToken;
             }
 
             public void Start()
             {
                 var uri = new Uri(BaseUrl);
                 var query = "?interval=" + Interval;
+                if (!string.IsNullOrEmpty(AccessToken)) query += "&access_token=" + AccessToken;
                 if (!DataItemIds.IsNullOrEmpty()) query += "&data_items=" + HttpUtility.UrlEncode(Json.Convert.ToJson(DataItemIds));
                 uri = new Uri(uri, DeviceId + "/samples" + query);
 

@@ -13,10 +13,11 @@ namespace TrakHound.Api.v2.Requests
         /// <summary>
         /// Request a model for a single device
         /// </summary>
-        public static DeviceModel Get(string baseUrl, string deviceId)
+        public static DeviceModel Get(string baseUrl, string deviceId, string accessToken)
         {
             var client = new RestClient(baseUrl);
             var request = new RestRequest(deviceId + "/model", Method.GET);
+            if (!string.IsNullOrEmpty(accessToken)) request.AddQueryParameter("access_token", accessToken);
 
             var response = client.Execute(request);
             if (response != null && response.StatusCode == System.Net.HttpStatusCode.OK)

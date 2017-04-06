@@ -14,12 +14,13 @@ namespace TrakHound.Api.v2.Requests
         /// <summary>
         /// Request Alarms for a single device
         /// </summary>
-        public static List<Data.Program> Get(string baseUrl, string deviceId, DateTime from, DateTime to)
+        public static List<Data.Program> Get(string baseUrl, string deviceId, DateTime from, DateTime to, string accessToken = null)
         {
             var client = new RestClient(baseUrl);
             var request = new RestRequest(deviceId + "/programs", Method.GET);
             if (from > DateTime.MinValue) request.AddQueryParameter("from", from.ToString("o"));
             if (to > DateTime.MinValue) request.AddQueryParameter("to", to.ToString("o"));
+            if (!string.IsNullOrEmpty(accessToken)) request.AddQueryParameter("access_token", accessToken);
 
             var response = client.Execute(request);
             if (response != null && response.StatusCode == System.Net.HttpStatusCode.OK)

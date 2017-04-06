@@ -10,6 +10,7 @@ using System.Net;
 using System.Text;
 using System.Threading;
 
+
 namespace TrakHound.Api.v2.Requests
 {
     public class Stream
@@ -17,8 +18,6 @@ namespace TrakHound.Api.v2.Requests
         private static Logger log = LogManager.GetCurrentClassLogger();
 
         private ManualResetEvent stop;
-        private Thread thread;
-
         private HttpWebRequest request;
         private System.IO.Stream requestStream;
         private StreamReader requestReader;
@@ -45,8 +44,7 @@ namespace TrakHound.Api.v2.Requests
             {
                 stop = new ManualResetEvent(false);
 
-                thread = new Thread(new ThreadStart(Worker));
-                thread.Start();
+                ThreadPool.QueueUserWorkItem(new WaitCallback(Worker));
             }
         }
 
@@ -58,19 +56,26 @@ namespace TrakHound.Api.v2.Requests
             if (requestStream != null) requestStream.Dispose();
         }
 
-        private void Worker()
+        private void Worker(object o)
         {
-            try
+            while (!stop.WaitOne(2000, true))
             {
-                if (!stop.WaitOne(0, true))
+                try
                 {
+                    var time = DateTime.UtcNow.ToUnixTime();
+
+                    log.Debug("Request Stream : Connecting to : " + Url + " @ " + time);
+
+
                     request = (HttpWebRequest)WebRequest.Create(Url);
                     using (var response = (HttpWebResponse)request.GetResponse())
                     using (requestStream = response.GetResponseStream())
                     using (requestReader = new StreamReader(requestStream, Encoding.GetEncoding("utf-8")))
                     {
+                        log.Debug("Request Stream : Connected to : " + Url + " @ " + time);
+
                         // Set Read Buffer
-                        var buffer = new char[1048576]; // 1 MB
+                        var buffer = new char[1024]; // 1 KB
                         int i = requestReader.Read(buffer, 0, buffer.Length);
 
                         string group = "";
@@ -79,6 +84,7 @@ namespace TrakHound.Api.v2.Requests
                         {
                             // Get string from buffer
                             var s = new string(buffer, 0, i);
+                            var c = -1;
 
                             // Find Beginning of Group (exclude HTTP header)
                             int b = s.IndexOf(StartCharacter);
@@ -87,28 +93,37 @@ namespace TrakHound.Api.v2.Requests
                             // Add buffer to Group txt
                             group += s;
 
-                            // Find Terminator Index
-                            int c = -1;
-                            if (!string.IsNullOrEmpty(group))
+                            do
                             {
-                                string tag = EndCharacter;
-                                c = group.IndexOf(tag);
-                                if (c >= 0) c = c + tag.Length;
-                            }
+                                c = -1;
 
-                            // Test if End of Group
-                            if (c >= 0)
-                            {
-                                b = 0;
-                                if (c > b)
+                                // Find Beginning of Group (exclude HTTP header)
+                                b = s.IndexOf(StartCharacter);
+                                if (b >= 0) s = s.Substring(b);
+
+                                // Find Terminator Index
+                                if (!string.IsNullOrEmpty(group))
                                 {
-                                    // Raise Group Received Event and pass text
-                                    GroupReceived?.Invoke(group.Substring(b, c - b));
+                                    string tag = EndCharacter;
+                                    c = group.IndexOf(tag);
+                                    if (c >= 0) c = c + tag.Length;
                                 }
 
-                                // Reset Group Text
-                                group = "";
-                            }
+                                // Test if End of Group
+                                if (c >= 0)
+                                {
+                                    b = 0;
+                                    if (c > b)
+                                    {
+                                        // Raise Group Received Event and pass text
+                                        var txt = group.Substring(b, c - b).Trim();
+                                        GroupReceived?.Invoke(txt);
+                                    }
+
+                                    // Remove from Group
+                                    group = group.Remove(b, c - b);
+                                }
+                            } while (c > 0);
 
                             // Clear Buffer
                             Array.Clear(buffer, 0, buffer.Length);
@@ -121,10 +136,10 @@ namespace TrakHound.Api.v2.Requests
                         }
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                log.Debug(ex);
+                catch (Exception ex)
+                {
+                    log.Debug(ex);
+                }
             }
         }
 

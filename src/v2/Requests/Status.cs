@@ -12,10 +12,11 @@ namespace TrakHound.Api.v2.Requests
         /// <summary>
         /// Request a status for a single device
         /// </summary>
-        public static Data.Status Get(string baseUrl, string deviceId)
+        public static Data.Status Get(string baseUrl, string deviceId, string accessToken)
         {
             var client = new RestClient(baseUrl);
             var request = new RestRequest(deviceId + "/status", Method.GET);
+            if (!string.IsNullOrEmpty(accessToken)) request.AddQueryParameter("access_token", accessToken);
 
             var response = client.Execute(request);
             if (response != null && response.StatusCode == System.Net.HttpStatusCode.OK)
