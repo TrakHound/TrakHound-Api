@@ -40,6 +40,8 @@ namespace TrakHound.Api.v2.Requests
 
         public void Start()
         {
+            Stop();
+
             if (!string.IsNullOrEmpty(Url))
             {
                 stop = new ManualResetEvent(false);
@@ -52,8 +54,6 @@ namespace TrakHound.Api.v2.Requests
         {
             if (stop != null) stop.Set();
             if (request != null) request.Abort();
-            if (requestReader != null) requestReader.Close();
-            if (requestStream != null) requestStream.Dispose();
         }
 
         private void Worker(object o)
@@ -69,8 +69,8 @@ namespace TrakHound.Api.v2.Requests
 
                     request = (HttpWebRequest)WebRequest.Create(Url);
                     using (var response = (HttpWebResponse)request.GetResponse())
-                    using (requestStream = response.GetResponseStream())
-                    using (requestReader = new StreamReader(requestStream, Encoding.GetEncoding("utf-8")))
+                    using (var requestStream = response.GetResponseStream())
+                    using (var requestReader = new StreamReader(requestStream, Encoding.GetEncoding("utf-8")))
                     {
                         log.Debug("Request Stream : Connected to : " + Url + " @ " + time);
 
@@ -123,13 +123,13 @@ namespace TrakHound.Api.v2.Requests
                                     // Remove from Group
                                     group = group.Remove(b, c - b);
                                 }
-                            } while (c > 0);
+                            } while (c > 0 && !stop.WaitOne(0, true));
 
                             // Clear Buffer
                             Array.Clear(buffer, 0, buffer.Length);
 
                             // Trim WhiteSpace (Leading/Trailing)
-                            group.Trim();
+                            group = group.Trim();
 
                             // Read Next Chunk
                             i = requestReader.Read(buffer, 0, buffer.Length);
