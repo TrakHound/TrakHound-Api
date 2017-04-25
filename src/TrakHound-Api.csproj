@@ -32,7 +32,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>packages\Newtonsoft.Json.10.0.2\lib\net40\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\TrakHound-DataServer\src\packages\Newtonsoft.Json.10.0.2\lib\net40\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
@@ -73,9 +73,11 @@
     <Compile Include="v2\Data\Device.cs" />
     <Compile Include="v2\Data\Program.cs" />
     <Compile Include="v2\Data\ProgramEvent.cs" />
+    <Compile Include="v2\Data\RejectedPart.cs" />
     <Compile Include="v2\Data\Sample.cs" />
     <Compile Include="v2\Data\SampleInfo.cs" />
     <Compile Include="v2\Data\Status.cs" />
+    <Compile Include="v2\Data\VerifiedPart.cs" />
     <Compile Include="v2\Devices\Device.cs" />
     <Compile Include="v2\Events\Event.cs" />
     <Compile Include="v2\Events\EventsConfiguration.cs" />
