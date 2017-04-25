@@ -227,6 +227,26 @@ namespace TrakHound.Api.v2
         }
 
         /// <summary>
+        /// Read RejectedParts from the database
+        /// </summary>
+        public static List<RejectedPart> ReadRejectedParts(string deviceId, string[] partIds, DateTime from, DateTime to, DateTime at)
+        {
+            if (module != null) return module.ReadRejectedParts(deviceId, partIds, from, to, at);
+
+            return null;
+        }
+
+        /// <summary>
+        /// Read VerifiedParts from the database
+        /// </summary>
+        public static List<VerifiedPart> ReadVerifiedParts(string deviceId, string[] partIds, DateTime from, DateTime to, DateTime at)
+        {
+            if (module != null) return module.ReadVerifiedParts(deviceId, partIds, from, to, at);
+
+            return null;
+        }
+
+        /// <summary>
         /// Read the Status from the database
         /// </summary>
         public static Status ReadStatus(string deviceId)
@@ -311,11 +331,55 @@ namespace TrakHound.Api.v2
         }
 
         /// <summary>
+        /// Write RejectedParts to the database
+        /// </summary>
+        public static bool Write(List<RejectedPart> parts)
+        {
+            if (module != null) return module.Write(parts);
+
+            return false;
+        }
+
+        /// <summary>
+        /// Write VerifiedParts to the database
+        /// </summary>
+        public static bool Write(List<VerifiedPart> parts)
+        {
+            if (module != null) return module.Write(parts);
+
+            return false;
+        }
+
+        /// <summary>
         /// Write Statuses to the database
         /// </summary>
         public static bool Write(List<StatusData> statuses)
         {
             if (module != null) return module.Write(statuses);
+
+            return false;
+        }
+
+        #endregion
+
+        #region "Delete"
+
+        /// <summary>
+        /// Delete RejectedPart from the database
+        /// </summary>
+        public static bool DeleteRejectedPart(string deviceId, string partId)
+        {
+            if (module != null) return module.DeleteRejectedPart(deviceId, partId);
+
+            return false;
+        }
+
+        /// <summary>
+        /// Delete VerifiedPart from the database
+        /// </summary>
+        public static bool DeleteVerifiedPart(string deviceId, string partId)
+        {
+            if (module != null) return module.DeleteVerifiedPart(deviceId, partId);
 
             return false;
         }

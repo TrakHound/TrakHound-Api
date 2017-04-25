@@ -67,6 +67,16 @@ namespace TrakHound.Api.v2
         List<Sample> ReadSamples(string[] dataItemIds, string deviceId, DateTime from, DateTime to, DateTime at, long count);
 
         /// <summary>
+        /// Read RejectedParts from the database
+        /// </summary>
+        List<RejectedPart> ReadRejectedParts(string deviceId, string[] partIds, DateTime from, DateTime to, DateTime at);
+
+        /// <summary>
+        /// Read Verified from the database
+        /// </summary>
+        List<VerifiedPart> ReadVerifiedParts(string deviceId, string[] partIds, DateTime from, DateTime to, DateTime at);
+
+        /// <summary>
         /// Read the Status from the database
         /// </summary>
         Status ReadStatus(string deviceId);
@@ -111,9 +121,33 @@ namespace TrakHound.Api.v2
         bool Write(List<SampleData> samples);
 
         /// <summary>
+        /// Write RejectedParts to the database
+        /// </summary>
+        bool Write(List<RejectedPart> parts);
+
+        /// <summary>
+        /// Write VerifiedParts to the database
+        /// </summary>
+        bool Write(List<VerifiedPart> parts);
+
+        /// <summary>
         /// Write Statuses to the database
         /// </summary>
         bool Write(List<StatusData> statuses);
+
+        #endregion
+
+        #region "Delete"
+
+        /// <summary>
+        /// Delete Rejected Part from the database
+        /// </summary>
+        bool DeleteRejectedPart(string deviceId, string partId);
+
+        /// <summary>
+        /// Delete Verified Part from the database
+        /// </summary>
+        bool DeleteVerifiedPart(string deviceId, string partId);
 
         #endregion
     }
