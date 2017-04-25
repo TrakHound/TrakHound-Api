@@ -16,8 +16,18 @@ namespace TrakHound.Api.v2
         string Name { get; }
 
         /// <summary>
-        /// Processes the requested Uri and returns the requested data
+        /// Processes the requested Uri and returns whether the request was handled
         /// </summary>
         bool GetResponse(Uri requestUri, Stream stream);
+
+        /// <summary>
+        /// Sends data to the requested Uri and returns whether the request was handled
+        /// </summary>
+        bool SendData(Uri requestUri, Stream stream);
+
+        /// <summary>
+        /// Delete data at the requested Uri and returns whether request was handled
+        /// </summary>
+        bool DeleteData(Uri requestUri);
     }
 }
