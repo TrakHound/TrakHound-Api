@@ -59,6 +59,15 @@ namespace TrakHound.Api.v2.Data
 
     public class DeviceModel : Device
     {
+        [JsonProperty("device_id")]
+        public string DeviceId { get; set; }
+
+        [JsonProperty("connection")]
+        public Connection Connection { get; set; }
+
+        [JsonProperty("agent")]
+        public Agent Agent { get; set; }
+
         [JsonProperty("components", Order = 5)]
         public List<ComponentModel> Components { get; set; }
 
