@@ -34,7 +34,7 @@ namespace TrakHound.Api.v2.Events
                 try
                 {
                     var serializer = new XmlSerializer(typeof(EventsConfiguration));
-                    using (var fileReader = new FileStream(path, FileMode.Open))
+                    using (var fileReader = new FileStream(path, FileMode.Open, FileAccess.Read))
                     using (var xmlReader = XmlReader.Create(fileReader))
                     {
                         return (EventsConfiguration)serializer.Deserialize(xmlReader);
