@@ -26,7 +26,11 @@ namespace TrakHound.Api.v2.Requests
                 if (!string.IsNullOrEmpty(json))
                 {
                     var obj = Json.Convert.FromJson<DeviceModel>(json);
-                    if (obj != null) return obj;
+                    if (obj != null)
+                    {
+                        obj.DeviceId = deviceId;
+                        return obj;
+                    }
                 }
             }
 
