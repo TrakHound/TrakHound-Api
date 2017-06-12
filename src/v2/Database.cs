@@ -10,7 +10,6 @@ using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.IO;
 using System.Reflection;
-using TrakHound.Api.v2.Cache;
 using TrakHound.Api.v2.Data;
 using TrakHound.Api.v2.Streams.Data;
 
