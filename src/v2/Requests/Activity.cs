@@ -14,13 +14,15 @@ namespace TrakHound.Api.v2.Requests
         /// <summary>
         /// Request Alarms for a single device
         /// </summary>
-        public static Data.ActivityItem Get(string baseUrl, string deviceId, DateTime from, DateTime to, int count)
+        public static Data.ActivityItem Get(string baseUrl, string deviceId, DateTime from, DateTime to, int count, string eventName, string accessToken)
         {
             var client = new RestClient(baseUrl);
             var request = new RestRequest(deviceId + "/activity", Method.GET);
             if (from > DateTime.MinValue) request.AddQueryParameter("from", from.ToString("o"));
             if (to > DateTime.MinValue) request.AddQueryParameter("to", to.ToString("o"));
             if (count > 0) request.AddQueryParameter("count", count.ToString());
+            if (!string.IsNullOrEmpty(accessToken)) request.AddQueryParameter("access_token", accessToken);
+            if (!string.IsNullOrEmpty(eventName)) request.AddQueryParameter("name", eventName);
 
             var response = client.Execute(request);
             if (response != null && response.StatusCode == System.Net.HttpStatusCode.OK)
@@ -38,24 +40,24 @@ namespace TrakHound.Api.v2.Requests
 
         #region "Overloads"
 
-        public static Data.ActivityItem Get(string baseUrl, string deviceId, DateTime from)
+        public static Data.ActivityItem Get(string baseUrl, string deviceId, DateTime from, string eventName = null, string accessToken = null)
         {
-            return Get(baseUrl, deviceId, from, DateTime.MinValue, 0);
+            return Get(baseUrl, deviceId, from, DateTime.MinValue, 0, eventName, accessToken);
         }
 
-        public static Data.ActivityItem Get(string baseUrl, string deviceId, int count)
+        public static Data.ActivityItem Get(string baseUrl, string deviceId, int count, string eventName = null, string accessToken = null)
         {
-            return Get(baseUrl, deviceId, DateTime.MinValue, DateTime.MinValue, count);
+            return Get(baseUrl, deviceId, DateTime.MinValue, DateTime.MinValue, count, eventName, accessToken);
         }
 
-        public static Data.ActivityItem Get(string baseUrl, string deviceId, DateTime from, int count)
+        public static Data.ActivityItem Get(string baseUrl, string deviceId, DateTime from, int count, string eventName = null, string accessToken = null)
         {
-            return Get(baseUrl, deviceId, from, DateTime.MinValue, count);
+            return Get(baseUrl, deviceId, from, DateTime.MinValue, count, eventName, accessToken);
         }
 
-        public static Data.ActivityItem Get(string baseUrl, string deviceId)
+        public static Data.ActivityItem Get(string baseUrl, string deviceId, string eventName = null, string accessToken = null)
         {
-            return Get(baseUrl, deviceId, DateTime.MinValue, DateTime.MinValue, 0);
+            return Get(baseUrl, deviceId, DateTime.MinValue, DateTime.MinValue, 0, eventName, accessToken);
         }
 
         #endregion
