@@ -10,6 +10,7 @@ using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.IO;
 using System.Reflection;
+using TrakHound.Api.v2.Cache;
 using TrakHound.Api.v2.Data;
 using TrakHound.Api.v2.Streams.Data;
 
@@ -25,14 +26,17 @@ namespace TrakHound.Api.v2
         private static IDatabaseModule module;
 
 
-        public static bool Initialize(string configurationPath)
+        public static bool Initialize(string configurationPath, string modulesDirectory = null)
         {
             var assemblyDir = Path.GetDirectoryName(Assembly.GetCallingAssembly().Location);
             var path = Path.Combine(assemblyDir, configurationPath);
+
             if (!string.IsNullOrEmpty(path))
             {
                 log.Info("Reading Database Configuration File From '" + path + "'");
 
+                var modulesDir = modulesDirectory;
+                if (string.IsNullOrEmpty(modulesDir)) modulesDir = assemblyDir;
                 var modules = FindModules(assemblyDir);
                 if (modules != null)
                 {
@@ -256,6 +260,26 @@ namespace TrakHound.Api.v2
             return null;
         }
 
+        ///// <summary>
+        ///// Read Cached OEE Data from the database
+        ///// </summary>
+        //public static List<OeeCache> ReadOeeCache(string deviceId, DateTime from, DateTime to, int increment)
+        //{
+        //    if (module != null) return module.ReadOeeCache(deviceId, from, to, increment);
+
+        //    return null;
+        //}
+
+        ///// <summary>
+        ///// Read Cached Activity Data from the database
+        ///// </summary>
+        //public static List<ActivityCache> ReadActivityCache(string deviceId, string eventName, DateTime from, DateTime to)
+        //{
+        //    if (module != null) return module.ReadActivityCache(deviceId, eventName, from, to);
+
+        //    return null;
+        //}
+
         #endregion
 
         #region "Write"
@@ -359,6 +383,26 @@ namespace TrakHound.Api.v2
 
             return false;
         }
+
+        ///// <summary>
+        ///// Write Cached OEE Data to the database
+        ///// </summary>
+        //public static bool Write(List<OeeCache> oees)
+        //{
+        //    if (module != null) return module.Write(oees);
+
+        //    return false;
+        //}
+
+        ///// <summary>
+        ///// Write Cached Activity Data to the database
+        ///// </summary>
+        //public static bool Write(List<ActivityCache> activities)
+        //{
+        //    if (module != null) return module.Write(activities);
+
+        //    return false;
+        //}
 
         #endregion
 
