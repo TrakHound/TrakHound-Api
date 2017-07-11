@@ -13,7 +13,16 @@ namespace TrakHound.Api.v2.Json
     {
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            writer.WriteRawValue(Math.Round(((DateTime)value - UnixTimeExtensions.EpochTime).TotalMilliseconds, 0).ToString());
+            var dateTime = (DateTime)value;
+
+            if (dateTime > DateTime.MinValue)
+            {
+                writer.WriteRawValue(Math.Round(((DateTime)value - UnixTimeExtensions.EpochTime).TotalMilliseconds, 0).ToString());
+            }
+            else
+            {
+                writer.WriteEnd();
+            }
         }
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
