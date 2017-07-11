@@ -22,21 +22,29 @@ namespace TrakHound.Api.v2
         /// <summary>
         /// The currently loaded IDatabaseModule
         /// </summary>
-        private static IDatabaseModule module;
+        public static IDatabaseModule Module;
 
 
         public static bool Initialize(string configurationPath, string modulesDirectory = null)
         {
             var assemblyDir = Path.GetDirectoryName(Assembly.GetCallingAssembly().Location);
-            var path = Path.Combine(assemblyDir, configurationPath);
+            var path = configurationPath;
+            if (!Path.IsPathRooted(path)) path = Path.Combine(assemblyDir, configurationPath);
 
             if (!string.IsNullOrEmpty(path))
             {
                 log.Info("Reading Database Configuration File From '" + path + "'");
 
-                var modulesDir = modulesDirectory;
-                if (string.IsNullOrEmpty(modulesDir)) modulesDir = assemblyDir;
-                var modules = FindModules(assemblyDir);
+                var modulesDir = assemblyDir;
+                if (!string.IsNullOrEmpty(modulesDirectory))
+                {
+                    modulesDir = modulesDirectory;
+                    if (!Path.IsPathRooted(modulesDir)) modulesDir = Path.Combine(assemblyDir, modulesDir);
+                }
+
+                log.Info("Reading Database Modules From '" + modulesDir + "'");
+
+                var modules = FindModules(modulesDir);
                 if (modules != null)
                 {
                     foreach (var module in modules)
@@ -46,7 +54,7 @@ namespace TrakHound.Api.v2
                             if (module.Initialize(path))
                             {
                                 log.Info(module.Name + " Database Module Initialize Successfully");
-                                Database.module = module;
+                                Module = module;
                                 return true;
                             }
                         }
@@ -63,11 +71,11 @@ namespace TrakHound.Api.v2
 
         public static void Close()
         {
-            if (module != null)
+            if (Module != null)
             {
                 try
                 {
-                    module.Close();
+                    Module.Close();
                 }
                 catch (Exception ex)
                 {
@@ -154,7 +162,7 @@ namespace TrakHound.Api.v2
         /// </summary>
         public static List<ConnectionDefinition> ReadConnections()
         {
-            if (module != null) return module.ReadConnections();
+            if (Module != null) return Module.ReadConnections();
 
             return null;
         }
@@ -164,7 +172,7 @@ namespace TrakHound.Api.v2
         /// </summary>
         public static ConnectionDefinition ReadConnection(string deviceId)
         {
-            if (module != null) return module.ReadConnection(deviceId);
+            if (Module != null) return Module.ReadConnection(deviceId);
 
             return null;
         }
@@ -174,7 +182,7 @@ namespace TrakHound.Api.v2
         /// </summary>
         public static AgentDefinition ReadAgent(string deviceId)
         {
-            if (module != null) return module.ReadAgent(deviceId);
+            if (Module != null) return Module.ReadAgent(deviceId);
 
             return null;
         }
@@ -184,7 +192,7 @@ namespace TrakHound.Api.v2
         /// </summary>
         public static List<AssetDefinition> ReadAssets(string deviceId, string assetId, DateTime from, DateTime to, DateTime at, long count)
         {
-            if (module != null) return module.ReadAssets(deviceId, assetId, from, to, at, count);
+            if (Module != null) return Module.ReadAssets(deviceId, assetId, from, to, at, count);
 
             return null;
         }
@@ -194,7 +202,7 @@ namespace TrakHound.Api.v2
         /// </summary>
         public static List<ComponentDefinition> ReadComponents(string deviceId, long agentInstanceId)
         {
-            if (module != null) return module.ReadComponents(deviceId, agentInstanceId);
+            if (Module != null) return Module.ReadComponents(deviceId, agentInstanceId);
 
             return null;
         }
@@ -204,7 +212,7 @@ namespace TrakHound.Api.v2
         /// </summary>
         public static List<DataItemDefinition> ReadDataItems(string deviceId, long agentInstanceId)
         {
-            if (module != null) return module.ReadDataItems(deviceId, agentInstanceId);
+            if (Module != null) return Module.ReadDataItems(deviceId, agentInstanceId);
 
             return null;
         }
@@ -214,7 +222,7 @@ namespace TrakHound.Api.v2
         /// </summary>
         public static DeviceDefinition ReadDevice(string deviceId, long agentInstanceId)
         {
-            if (module != null) return module.ReadDevice(deviceId, agentInstanceId);
+            if (Module != null) return Module.ReadDevice(deviceId, agentInstanceId);
 
             return null;
         }
@@ -224,7 +232,7 @@ namespace TrakHound.Api.v2
         /// </summary>
         public static List<Sample> ReadSamples(string[] dataItemIds, string deviceId, DateTime from, DateTime to, DateTime at, long count)
         {
-            if (module != null) return module.ReadSamples(dataItemIds, deviceId, from, to, at, count);
+            if (Module != null) return Module.ReadSamples(dataItemIds, deviceId, from, to, at, count);
 
             return null;
         }
@@ -234,7 +242,7 @@ namespace TrakHound.Api.v2
         /// </summary>
         public static List<RejectedPart> ReadRejectedParts(string deviceId, string[] partIds, DateTime from, DateTime to, DateTime at)
         {
-            if (module != null) return module.ReadRejectedParts(deviceId, partIds, from, to, at);
+            if (Module != null) return Module.ReadRejectedParts(deviceId, partIds, from, to, at);
 
             return null;
         }
@@ -244,7 +252,7 @@ namespace TrakHound.Api.v2
         /// </summary>
         public static List<VerifiedPart> ReadVerifiedParts(string deviceId, string[] partIds, DateTime from, DateTime to, DateTime at)
         {
-            if (module != null) return module.ReadVerifiedParts(deviceId, partIds, from, to, at);
+            if (Module != null) return Module.ReadVerifiedParts(deviceId, partIds, from, to, at);
 
             return null;
         }
@@ -254,30 +262,10 @@ namespace TrakHound.Api.v2
         /// </summary>
         public static Status ReadStatus(string deviceId)
         {
-            if (module != null) return module.ReadStatus(deviceId);
+            if (Module != null) return Module.ReadStatus(deviceId);
 
             return null;
         }
-
-        ///// <summary>
-        ///// Read Cached OEE Data from the database
-        ///// </summary>
-        //public static List<OeeCache> ReadOeeCache(string deviceId, DateTime from, DateTime to, int increment)
-        //{
-        //    if (module != null) return module.ReadOeeCache(deviceId, from, to, increment);
-
-        //    return null;
-        //}
-
-        ///// <summary>
-        ///// Read Cached Activity Data from the database
-        ///// </summary>
-        //public static List<ActivityCache> ReadActivityCache(string deviceId, string eventName, DateTime from, DateTime to)
-        //{
-        //    if (module != null) return module.ReadActivityCache(deviceId, eventName, from, to);
-
-        //    return null;
-        //}
 
         #endregion
 
@@ -288,7 +276,7 @@ namespace TrakHound.Api.v2
         /// </summary>
         public static bool Write(List<ConnectionDefinitionData> definitions)
         {
-            if (module != null) return module.Write(definitions);
+            if (Module != null) return Module.Write(definitions);
 
             return false;
         }
@@ -298,7 +286,7 @@ namespace TrakHound.Api.v2
         /// </summary>
         public static bool Write(List<AgentDefinitionData> definitions)
         {
-            if (module != null) return module.Write(definitions);
+            if (Module != null) return Module.Write(definitions);
 
             return false;
         }
@@ -308,7 +296,7 @@ namespace TrakHound.Api.v2
         /// </summary>
         public static bool Write(List<AssetDefinitionData> definitions)
         {
-            if (module != null) return module.Write(definitions);
+            if (Module != null) return Module.Write(definitions);
 
             return false;
         }
@@ -318,7 +306,7 @@ namespace TrakHound.Api.v2
         /// </summary>
         public static bool Write(List<ComponentDefinitionData> definitions)
         {
-            if (module != null) return module.Write(definitions);
+            if (Module != null) return Module.Write(definitions);
 
             return false;
         }
@@ -328,7 +316,7 @@ namespace TrakHound.Api.v2
         /// </summary>
         public static bool Write(List<DataItemDefinitionData> definitions)
         {
-            if (module != null) return module.Write(definitions);
+            if (Module != null) return Module.Write(definitions);
 
             return false;
         }
@@ -338,7 +326,7 @@ namespace TrakHound.Api.v2
         /// </summary>
         public static bool Write(List<DeviceDefinitionData> definitions)
         {
-            if (module != null) return module.Write(definitions);
+            if (Module != null) return Module.Write(definitions);
 
             return false;
         }
@@ -348,7 +336,7 @@ namespace TrakHound.Api.v2
         /// </summary>
         public static bool Write(List<SampleData> samples)
         {
-            if (module != null) return module.Write(samples);
+            if (Module != null) return Module.Write(samples);
 
             return false;
         }
@@ -358,7 +346,7 @@ namespace TrakHound.Api.v2
         /// </summary>
         public static bool Write(List<RejectedPart> parts)
         {
-            if (module != null) return module.Write(parts);
+            if (Module != null) return Module.Write(parts);
 
             return false;
         }
@@ -368,7 +356,7 @@ namespace TrakHound.Api.v2
         /// </summary>
         public static bool Write(List<VerifiedPart> parts)
         {
-            if (module != null) return module.Write(parts);
+            if (Module != null) return Module.Write(parts);
 
             return false;
         }
@@ -378,30 +366,10 @@ namespace TrakHound.Api.v2
         /// </summary>
         public static bool Write(List<StatusData> statuses)
         {
-            if (module != null) return module.Write(statuses);
+            if (Module != null) return Module.Write(statuses);
 
             return false;
         }
-
-        ///// <summary>
-        ///// Write Cached OEE Data to the database
-        ///// </summary>
-        //public static bool Write(List<OeeCache> oees)
-        //{
-        //    if (module != null) return module.Write(oees);
-
-        //    return false;
-        //}
-
-        ///// <summary>
-        ///// Write Cached Activity Data to the database
-        ///// </summary>
-        //public static bool Write(List<ActivityCache> activities)
-        //{
-        //    if (module != null) return module.Write(activities);
-
-        //    return false;
-        //}
 
         #endregion
 
@@ -412,7 +380,7 @@ namespace TrakHound.Api.v2
         /// </summary>
         public static bool DeleteRejectedPart(string deviceId, string partId)
         {
-            if (module != null) return module.DeleteRejectedPart(deviceId, partId);
+            if (Module != null) return Module.DeleteRejectedPart(deviceId, partId);
 
             return false;
         }
@@ -422,7 +390,7 @@ namespace TrakHound.Api.v2
         /// </summary>
         public static bool DeleteVerifiedPart(string deviceId, string partId)
         {
-            if (module != null) return module.DeleteVerifiedPart(deviceId, partId);
+            if (Module != null) return Module.DeleteVerifiedPart(deviceId, partId);
 
             return false;
         }
