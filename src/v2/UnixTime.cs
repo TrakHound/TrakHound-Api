@@ -15,5 +15,10 @@ namespace TrakHound.Api.v2
         {
             return Convert.ToInt64(Math.Round((d - EpochTime).TotalMilliseconds, 0));
         }
+
+        public static DateTime FromUnixTime(long unixMilliseconds)
+        {
+            return EpochTime.AddMilliseconds(unixMilliseconds);
+        }
     }
 }
