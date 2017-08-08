@@ -42,6 +42,9 @@ namespace TrakHound.Api.v2.Data
 
         [JsonProperty("parent_id")]
         public string ParentId { get; set; }
+
+        [JsonProperty("parent_type")]
+        public string ParentType { get; set; }
     }
 
     public class ComponentModel : Component
