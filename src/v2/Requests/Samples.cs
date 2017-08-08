@@ -15,7 +15,7 @@ namespace TrakHound.Api.v2.Requests
         /// <summary>
         /// Request Samples for a single device
         /// </summary>
-        public static List<Data.Sample> Get(string baseUrl, string deviceId, DateTime from, DateTime to, int count, string accessToken)
+        public static List<Data.Sample> Get(string baseUrl, string deviceId, string[] dataItems, DateTime from, DateTime to, int count, string accessToken)
         {
             var client = new RestClient(baseUrl);
             var request = new RestRequest(deviceId + "/samples", Method.GET);
@@ -23,6 +23,12 @@ namespace TrakHound.Api.v2.Requests
             if (to > DateTime.MinValue) request.AddQueryParameter("to", to.ToString("o"));
             if (count > 0) request.AddQueryParameter("count", count.ToString());
             if (!string.IsNullOrEmpty(accessToken)) request.AddQueryParameter("access_token", accessToken);
+
+            if (!dataItems.IsNullOrEmpty())
+            {
+                var dataItemJson = Json.Convert.ToJson(dataItems);
+                request.AddQueryParameter("data_items", dataItemJson);
+            }
 
             var response = client.Execute(request);
             if (response != null && response.StatusCode == System.Net.HttpStatusCode.OK)
@@ -62,22 +68,22 @@ namespace TrakHound.Api.v2.Requests
 
         public static List<Data.Sample> Get(string baseUrl, string deviceId, string accessToken = null)
         {
-            return Get(baseUrl, deviceId, DateTime.MinValue, DateTime.MinValue, 0, accessToken);
+            return Get(baseUrl, deviceId, null, DateTime.MinValue, DateTime.MinValue, 0, accessToken);
         }
 
         public static List<Data.Sample> Get(string baseUrl, string deviceId, DateTime from, string accessToken = null)
         {
-            return Get(baseUrl, deviceId, from, DateTime.MinValue, 0, accessToken);
+            return Get(baseUrl, deviceId, null, from, DateTime.MinValue, 0, accessToken);
         }
 
         public static List<Data.Sample> Get(string baseUrl, string deviceId, int count, string accessToken = null)
         {
-            return Get(baseUrl, deviceId, DateTime.MinValue, DateTime.MinValue, count, accessToken);
+            return Get(baseUrl, deviceId, null, DateTime.MinValue, DateTime.MinValue, count, accessToken);
         }
 
         public static List<Data.Sample> Get(string baseUrl, string deviceId, DateTime from, int count, string accessToken = null)
         {
-            return Get(baseUrl, deviceId, from, DateTime.MinValue, count, accessToken);
+            return Get(baseUrl, deviceId, null, from, DateTime.MinValue, count, accessToken);
         }
 
         #endregion
