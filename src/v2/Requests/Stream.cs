@@ -10,7 +10,6 @@ using System.Net;
 using System.Text;
 using System.Threading;
 
-
 namespace TrakHound.Api.v2.Requests
 {
     public class Stream
@@ -19,13 +18,12 @@ namespace TrakHound.Api.v2.Requests
 
         private ManualResetEvent stop;
         private HttpWebRequest request;
-        private System.IO.Stream requestStream;
-        private StreamReader requestReader;
-
+        private StreamReader reader;
 
         public string Url { get; set; }
         public string StartCharacter { get; set; }
         public string EndCharacter { get; set; }
+        public int RefreshInterval { get; set; }
 
         public delegate void GroupHandler(string text);
         public event GroupHandler GroupReceived;
@@ -36,6 +34,7 @@ namespace TrakHound.Api.v2.Requests
             Url = url;
             StartCharacter = startCharacter;
             EndCharacter = endCharacter;
+            RefreshInterval = 900000; // 15 Minutes
         }
 
         public void Start()
@@ -66,21 +65,23 @@ namespace TrakHound.Api.v2.Requests
 
                     log.Debug("Request Stream : Connecting to : " + Url + " @ " + time);
 
+                    var refreshTimer = new System.Diagnostics.Stopwatch();
+                    refreshTimer.Start();
 
                     request = (HttpWebRequest)WebRequest.Create(Url);
                     using (var response = (HttpWebResponse)request.GetResponse())
                     using (var requestStream = response.GetResponseStream())
-                    using (var requestReader = new StreamReader(requestStream, Encoding.GetEncoding("utf-8")))
+                    using (var reader = new StreamReader(requestStream, Encoding.GetEncoding("utf-8")))
                     {
                         log.Debug("Request Stream : Connected to : " + Url + " @ " + time);
 
                         // Set Read Buffer
                         var buffer = new char[1024]; // 1 KB
-                        int i = requestReader.Read(buffer, 0, buffer.Length);
+                        int i = reader.Read(buffer, 0, buffer.Length);
 
                         string group = "";
 
-                        while (i > 0 && !stop.WaitOne(0, true))
+                        while (i > 0 && !stop.WaitOne(0, true) && refreshTimer.ElapsedMilliseconds < RefreshInterval)
                         {
                             // Get string from buffer
                             var s = new string(buffer, 0, i);
@@ -132,8 +133,10 @@ namespace TrakHound.Api.v2.Requests
                             group = group.Trim();
 
                             // Read Next Chunk
-                            i = requestReader.Read(buffer, 0, buffer.Length);
+                            i = reader.Read(buffer, 0, buffer.Length);
                         }
+
+                        requestStream.Close();
                     }
                 }
                 catch (Exception ex)
