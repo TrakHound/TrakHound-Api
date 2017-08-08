@@ -22,5 +22,8 @@ namespace TrakHound.Api.v2.Data
 
         [JsonProperty("connected")]
         public bool Connected { get; set; }
+
+        [JsonProperty("agent_instance_id")]
+        public long AgentInstanceId { get; set; }
     }
 }
