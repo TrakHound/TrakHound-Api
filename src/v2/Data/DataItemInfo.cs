@@ -16,6 +16,7 @@ namespace TrakHound.Api.v2.Data
         {
             this.Id = definition.Id;
             this.Type = definition.Type;
+            this.ParentId = definition.ParentId;
             this.SubType = definition.SubType;
             this.Parents = DataItemInfo.GetParents(definition.ParentId, components);
         }
