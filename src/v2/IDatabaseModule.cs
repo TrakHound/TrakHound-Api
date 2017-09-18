@@ -6,7 +6,6 @@
 using System;
 using System.Collections.Generic;
 using TrakHound.Api.v2.Data;
-using TrakHound.Api.v2.Streams.Data;
 
 namespace TrakHound.Api.v2
 {
@@ -88,37 +87,42 @@ namespace TrakHound.Api.v2
         /// <summary>
         /// Write ConnectionDefintions to the database
         /// </summary>
-        bool Write(List<ConnectionDefinitionData> definitions);
+        bool Write(List<ConnectionDefinition> definitions);
 
         /// <summary>
         /// Write AgentDefintions to the database
         /// </summary>
-        bool Write(List<AgentDefinitionData> definitions);
+        bool Write(List<AgentDefinition> definitions);
 
         /// <summary>
         /// Write AssetDefintions to the database
         /// </summary>
-        bool Write(List<AssetDefinitionData> definitions);
+        bool Write(List<AssetDefinition> definitions);
 
         /// <summary>
         /// Write ComponentDefintions to the database
         /// </summary>
-        bool Write(List<ComponentDefinitionData> definitions);
+        bool Write(List<ComponentDefinition> definitions);
 
         /// <summary>
         /// Write DataItemDefintions to the database
         /// </summary>
-        bool Write(List<DataItemDefinitionData> definitions);
+        bool Write(List<DataItemDefinition> definitions);
 
         /// <summary>
         /// Write DeviceDefintions to the database
         /// </summary>
-        bool Write(List<DeviceDefinitionData> definitions);
+        bool Write(List<DeviceDefinition> definitions);
 
         /// <summary>
         /// Write Samples to the database
         /// </summary>
-        bool Write(List<SampleData> samples);
+        bool WriteArchivedSamples(List<Sample> samples);
+
+        /// <summary>
+        /// Write Samples to the database
+        /// </summary>
+        bool WriteCurrentSamples(List<Sample> samples);
 
         /// <summary>
         /// Write RejectedParts to the database
@@ -133,7 +137,7 @@ namespace TrakHound.Api.v2
         /// <summary>
         /// Write Statuses to the database
         /// </summary>
-        bool Write(List<StatusData> statuses);
+        bool Write(List<Status> statuses);
 
         #endregion
 

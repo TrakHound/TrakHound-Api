@@ -274,7 +274,7 @@ namespace TrakHound.Api.v2
         /// <summary>
         /// Write ConnectionDefinitions to the database
         /// </summary>
-        public static bool Write(List<ConnectionDefinitionData> definitions)
+        public static bool Write(List<ConnectionDefinition> definitions)
         {
             if (Module != null) return Module.Write(definitions);
 
@@ -284,7 +284,7 @@ namespace TrakHound.Api.v2
         /// <summary>
         /// Write AgentDefintions to the database
         /// </summary>
-        public static bool Write(List<AgentDefinitionData> definitions)
+        public static bool Write(List<AgentDefinition> definitions)
         {
             if (Module != null) return Module.Write(definitions);
 
@@ -294,7 +294,7 @@ namespace TrakHound.Api.v2
         /// <summary>
         /// Write AssetDefintions to the database
         /// </summary>
-        public static bool Write(List<AssetDefinitionData> definitions)
+        public static bool Write(List<AssetDefinition> definitions)
         {
             if (Module != null) return Module.Write(definitions);
 
@@ -304,7 +304,7 @@ namespace TrakHound.Api.v2
         /// <summary>
         /// Write ComponentDefintions to the database
         /// </summary>
-        public static bool Write(List<ComponentDefinitionData> definitions)
+        public static bool Write(List<ComponentDefinition> definitions)
         {
             if (Module != null) return Module.Write(definitions);
 
@@ -314,7 +314,7 @@ namespace TrakHound.Api.v2
         /// <summary>
         /// Write DataItemDefintions to the database
         /// </summary>
-        public static bool Write(List<DataItemDefinitionData> definitions)
+        public static bool Write(List<DataItemDefinition> definitions)
         {
             if (Module != null) return Module.Write(definitions);
 
@@ -324,7 +324,7 @@ namespace TrakHound.Api.v2
         /// <summary>
         /// Write DeviceDefintions to the database
         /// </summary>
-        public static bool Write(List<DeviceDefinitionData> definitions)
+        public static bool Write(List<DeviceDefinition> definitions)
         {
             if (Module != null) return Module.Write(definitions);
 
@@ -334,9 +334,19 @@ namespace TrakHound.Api.v2
         /// <summary>
         /// Write Samples to the database
         /// </summary>
-        public static bool Write(List<SampleData> samples)
+        public static bool WriteArchivedSamples(List<Sample> samples)
         {
-            if (Module != null) return Module.Write(samples);
+            if (Module != null) return Module.WriteArchivedSamples(samples);
+
+            return false;
+        }
+
+        /// <summary>
+        /// Write Samples to the database
+        /// </summary>
+        public static bool WriteCurrentSamples(List<Sample> samples)
+        {
+            if (Module != null) return Module.WriteCurrentSamples(samples);
 
             return false;
         }
@@ -364,7 +374,7 @@ namespace TrakHound.Api.v2
         /// <summary>
         /// Write Statuses to the database
         /// </summary>
-        public static bool Write(List<StatusData> statuses)
+        public static bool Write(List<Status> statuses)
         {
             if (Module != null) return Module.Write(statuses);
 
