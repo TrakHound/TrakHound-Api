@@ -68,8 +68,8 @@
     <Compile Include="v2\Authentication\ApiKey.cs" />
     <Compile Include="v2\Authentication\Token.cs" />
     <Compile Include="v2\Authentication\User.cs" />
-    <Compile Include="v2\Caching\CachedSample.cs" />
-    <Compile Include="v2\Caching\SamplesCache.cs" />
+    <None Include="v2\Caching\CachedSample.cs" />
+    <None Include="v2\Caching\SamplesCache.cs" />
     <Compile Include="v2\Database.cs" />
     <Compile Include="v2\Data\ActivityEventItem.cs" />
     <Compile Include="v2\Data\ActivityItem.cs" />
@@ -100,6 +100,7 @@
     <Compile Include="v2\Events\Trigger.cs" />
     <Compile Include="v2\Events\TriggerModifier.cs" />
     <Compile Include="v2\DataFilter.cs" />
+    <Compile Include="v2\IAnalyticModule.cs" />
     <Compile Include="v2\IDatabaseModule.cs" />
     <Compile Include="v2\IRestModule.cs" />
     <Compile Include="v2\Json\Convert.cs" />
@@ -139,7 +140,7 @@
     <PostBuildEvent>if exist $(ProjectDir)nuget.exe $(ProjectDir)nuget pack $(ProjectPath) -properties Configuration=Release</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PostBuildEvent>if exist $(ProjectDir)nuget.exe $(ProjectDir)nuget pack $(ProjectPath) -properties Configuration=Release</PostBuildEvent>
+    <PostBuildEvent>if exist $(ProjectDir)nuget.exe $(ProjectDir)nuget pack $(ProjectPath) -properties Configuration=Nuget</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
