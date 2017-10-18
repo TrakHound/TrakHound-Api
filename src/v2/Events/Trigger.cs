@@ -14,6 +14,9 @@ namespace TrakHound.Api.v2.Events
 {
     public class Trigger : IEvaluator
     {
+        [XmlAttribute("device_id")]
+        public string DeviceId { get; set; }
+
         [XmlAttribute("filter")]
         public string Filter { get; set; }
 
@@ -23,6 +26,36 @@ namespace TrakHound.Api.v2.Events
         [XmlAttribute("modifier")]
         public TriggerModifier Modifier { get; set; }
 
+
+        public Trigger() { }
+
+        public Trigger(string filter, string value)
+        {
+            Filter = filter;
+            Value = value;
+        }
+
+        public Trigger(string filter, string value, TriggerModifier modifier)
+        {
+            Filter = filter;
+            Value = value;
+            Modifier = modifier;
+        }
+
+        public Trigger(string deviceId, string filter, string value)
+        {
+            DeviceId = deviceId;
+            Filter = filter;
+            Value = value;
+        }
+
+        public Trigger(string deviceId, string filter, string value, TriggerModifier modifier)
+        {
+            DeviceId = deviceId;
+            Filter = filter;
+            Value = value;
+            Modifier = modifier;
+        }
 
         public bool Evaluate(List<SampleInfo> samples)
         {
