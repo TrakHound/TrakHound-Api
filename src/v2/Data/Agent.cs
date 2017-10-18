@@ -10,10 +10,6 @@ namespace TrakHound.Api.v2.Data
 {
     public class Agent
     {
-        [JsonProperty("timestamp")]
-        [JsonConverter(typeof(Json.UnixTimeConverter))]
-        public DateTime Timestamp { get; set; }
-
         [JsonProperty("instance_id")]
         public long InstanceId { get; set; }
 
@@ -28,6 +24,10 @@ namespace TrakHound.Api.v2.Data
 
         [JsonProperty("test_indicator")]
         public string TestIndicator { get; set; }
+
+        [JsonProperty("timestamp")]
+        [JsonConverter(typeof(Json.UnixTimeConverter))]
+        public DateTime Timestamp { get; set; }
     }
 
     public class AgentDefinition : Agent

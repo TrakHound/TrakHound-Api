@@ -13,15 +13,15 @@ namespace TrakHound.Api.v2.Data
         [JsonProperty("device_id")]
         public string DeviceId { get; set; }
 
+        [JsonProperty("id")]
+        public string Id { get; set; }
+
         [JsonProperty("timestamp")]
         [JsonConverter(typeof(Json.UnixTimeConverter))]
         public DateTime Timestamp { get; set; }
 
         [JsonProperty("agent_instance_id")]
         public long AgentInstanceId { get; set; }
-
-        [JsonProperty("id")]
-        public string Id { get; set; }
 
         [JsonProperty("sequence")]
         public long Sequence { get; set; }
