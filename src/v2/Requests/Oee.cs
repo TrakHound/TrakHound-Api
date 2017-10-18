@@ -14,13 +14,14 @@ namespace TrakHound.Api.v2.Requests
         /// <summary>
         /// Request OEE Data for a single device
         /// </summary>
-        public static List<Data.Oee> Get(string baseUrl, string deviceId, DateTime from, DateTime to, int increment, string accessToken)
+        public static List<Data.Oee> Get(string baseUrl, string deviceId, DateTime from, DateTime to, int increment, string path, string accessToken)
         {
             var client = new RestClient(baseUrl);
             var request = new RestRequest(deviceId + "/oee", Method.GET);
             if (from > DateTime.MinValue) request.AddQueryParameter("from", from.ToString("o"));
             if (to > DateTime.MinValue) request.AddQueryParameter("to", to.ToString("o"));
             if (increment > 0) request.AddQueryParameter("increment", increment.ToString());
+            if (!string.IsNullOrEmpty(path)) request.AddQueryParameter("path", path);
             if (!string.IsNullOrEmpty(accessToken)) request.AddQueryParameter("access_token", accessToken);
 
             var response = client.Execute(request);
@@ -41,12 +42,12 @@ namespace TrakHound.Api.v2.Requests
 
         public static List<Data.Oee> Get(string baseUrl, string deviceId, DateTime from, string accessToken = null)
         {
-            return Get(baseUrl, deviceId, from, DateTime.MinValue, 0, accessToken);
+            return Get(baseUrl, deviceId, from, DateTime.MinValue, 0, null, accessToken);
         }
 
         public static List<Data.Oee> Get(string baseUrl, string deviceId, DateTime from, DateTime to, string accessToken = null)
         {
-            return Get(baseUrl, deviceId, from, to, 0, accessToken);
+            return Get(baseUrl, deviceId, from, to, 0, null, accessToken);
         }
 
         #endregion
@@ -63,11 +64,12 @@ namespace TrakHound.Api.v2.Requests
             public int Interval { get; set; }
             public int Increment { get; set; }
             public string AccessToken { get; set; }
+            public string Path { get; set; }
 
             public delegate void OeeHandler(List<Data.Oee> oee);
             public event OeeHandler OeeReceived;
 
-            public Stream(string baseUrl, string deviceId, DateTime from, DateTime to, int interval, int increment, string accessToken = null)
+            public Stream(string baseUrl, string deviceId, DateTime from, DateTime to, int interval, int increment, string path, string accessToken = null)
             {
                 BaseUrl = baseUrl;
                 DeviceId = deviceId;
@@ -75,6 +77,7 @@ namespace TrakHound.Api.v2.Requests
                 To = to;
                 Interval = interval;
                 Increment = increment;
+                Path = path;
                 AccessToken = accessToken;
             }
 
@@ -82,6 +85,7 @@ namespace TrakHound.Api.v2.Requests
             {
                 var uri = new Uri(BaseUrl);
                 var query = "?interval=" + Interval;
+                if (!string.IsNullOrEmpty(Path)) query += "&path=" + Path;
                 if (!string.IsNullOrEmpty(AccessToken)) query += "&access_token=" + AccessToken;
                 if (From > DateTime.MinValue) query += "&from=" + From.ToString("o");
                 if (To > DateTime.MinValue) query += "&to=" + To.ToString("o");
