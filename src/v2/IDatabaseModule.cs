@@ -25,6 +25,8 @@ namespace TrakHound.Api.v2
 
         #region "Read"
 
+        List<T> ExecuteQuery<T>(string query);
+
         /// <summary>
         /// Read all of the Connections available from the DataServer
         /// </summary>
@@ -63,7 +65,7 @@ namespace TrakHound.Api.v2
         /// <summary>
         /// Read Samples from the database
         /// </summary>
-        List<Sample> ReadSamples(string[] dataItemIds, string deviceId, DateTime from, DateTime to, DateTime at, long count);
+        List<Sample> ReadSamples(string[] dataItemIds, string deviceId, DateTime from, DateTime to, DateTime at, long count, bool includeCurrent = true);
 
         /// <summary>
         /// Read RejectedParts from the database

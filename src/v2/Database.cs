@@ -157,6 +157,13 @@ namespace TrakHound.Api.v2
 
         #region "Read"
 
+        public static List<T> ExecuteQuery<T>(string query)
+        {
+            if (Module != null) return Module.ExecuteQuery<T>(query);
+
+            return null;
+        }
+
         /// <summary>
         /// Read all of the Connections available from the DataServer
         /// </summary>
@@ -230,9 +237,9 @@ namespace TrakHound.Api.v2
         /// <summary>
         /// Read Samples from the database
         /// </summary>
-        public static List<Sample> ReadSamples(string[] dataItemIds, string deviceId, DateTime from, DateTime to, DateTime at, long count)
+        public static List<Sample> ReadSamples(string[] dataItemIds, string deviceId, DateTime from, DateTime to, DateTime at, long count, bool includeCurrent)
         {
-            if (Module != null) return Module.ReadSamples(dataItemIds, deviceId, from, to, at, count);
+            if (Module != null) return Module.ReadSamples(dataItemIds, deviceId, from, to, at, count, includeCurrent);
 
             return null;
         }
