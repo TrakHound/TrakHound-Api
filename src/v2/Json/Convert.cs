@@ -25,6 +25,7 @@ namespace TrakHound.Api.v2.Json
                     settings.DateParseHandling = DateParseHandling.DateTime;
                     settings.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
                     settings.NullValueHandling = NullValueHandling.Ignore;
+                    settings.DefaultValueHandling = DefaultValueHandling.Ignore;
 
                     return (T)JsonConvert.DeserializeObject(json, (typeof(T)), settings);
                 }

@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2017 TrakHound Inc., All Rights Reserved.
+﻿// Copyright (c) 2020 TrakHound Inc., All Rights Reserved.
 
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE.txt', which is part of this source code package.
@@ -12,13 +12,17 @@ namespace TrakHound.Api.v2.Data
     {
         public List<ComponentDefinition> Parents { get; set; }
 
+        public bool IsMultiplePath { get; set; }
+
         public DataItemInfo(DataItemDefinition definition, List<ComponentDefinition> components)
         {
-            this.Id = definition.Id;
-            this.Type = definition.Type;
-            this.ParentId = definition.ParentId;
-            this.SubType = definition.SubType;
-            this.Parents = DataItemInfo.GetParents(definition.ParentId, components);
+            Id = definition.Id;
+            Type = definition.Type;
+            ParentId = definition.ParentId;
+            SubType = definition.SubType;
+            Parents = GetParents(definition.ParentId, components);
+
+            IsMultiplePath = components.FindAll(o => o.Type == "Path").Count > 1 && Parents.Exists(o => o.Type == "Path");
         }
 
         private static List<ComponentDefinition> GetParents(string parentId, List<ComponentDefinition> components)

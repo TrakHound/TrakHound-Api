@@ -1,17 +1,23 @@
-﻿// Copyright (c) 2017 TrakHound Inc, All Rights Reserved.
+﻿// Copyright (c) 2019 TrakHound Inc, All Rights Reserved.
 
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE.txt', which is part of this source code package.
 
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Serialization;
 using TrakHound.Api.v2.Data;
-using System.Linq;
 
 namespace TrakHound.Api.v2.Events
 {
     public class Event
     {
+        /// <summary>
+        /// Device ID for the Event
+        /// </summary>
+        [XmlAttribute("deviceId")]
+        public string DeviceId { get; set; }
+
         /// <summary>
         /// Name of the Event
         /// </summary>
@@ -72,6 +78,51 @@ namespace TrakHound.Api.v2.Events
             }
 
             return null;
+        }
+
+        public static string[] GetIds(Event e, List<DataItemDefinition> dataItems, List<ComponentDefinition> components)
+        {
+            var ids = new List<string>();
+
+            foreach (var response in e.Responses)
+            {
+                foreach (var trigger in response.Triggers.OfType<Trigger>())
+                {
+                    foreach (var id in GetFilterIds(trigger.Filter, dataItems, components))
+                    {
+                        if (!ids.Exists(o => o == id)) ids.Add(id);
+                    }
+                }
+
+                foreach (var multiTrigger in response.Triggers.OfType<MultiTrigger>())
+                {
+                    foreach (var trigger in multiTrigger.Triggers)
+                    {
+                        foreach (var id in GetFilterIds(trigger.Filter, dataItems, components))
+                        {
+                            if (!ids.Exists(o => o == id)) ids.Add(id);
+                        }
+                    }
+                }
+            }
+
+            return ids.ToArray();
+        }
+
+        private static string[] GetFilterIds(string filter, List<DataItemDefinition> dataItems, List<ComponentDefinition> components)
+        {
+            var ids = new List<string>();
+
+            foreach (var dataItem in dataItems)
+            {
+                var dataFilter = new DataFilter(filter, dataItem, components);
+                if (dataFilter.IsMatch() && !ids.Exists(o => o == dataItem.Id))
+                {
+                    ids.Add(dataItem.Id);
+                }
+            }
+
+            return ids.ToArray();
         }
     }
 }

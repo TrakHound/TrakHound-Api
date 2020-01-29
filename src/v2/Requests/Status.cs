@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2017 TrakHound Inc., All Rights Reserved.
+﻿// Copyright (c) 2020 TrakHound Inc., All Rights Reserved.
 
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE.txt', which is part of this source code package.
@@ -31,5 +31,25 @@ namespace TrakHound.Api.v2.Requests
 
             return null;
         }
+
+        //public static Data.ReturnedStatus Get(string baseUrl, string deviceId, string accessToken)
+        //{
+        //    var client = new RestClient(baseUrl);
+        //    var request = new RestRequest(deviceId + "/status", Method.GET);
+        //    if (!string.IsNullOrEmpty(accessToken)) request.AddQueryParameter("access_token", accessToken);
+
+        //    var response = client.Execute(request);
+        //    if (response != null && response.StatusCode == System.Net.HttpStatusCode.OK)
+        //    {
+        //        var json = response.Content;
+        //        if (!string.IsNullOrEmpty(json))
+        //        {
+        //            var obj = Json.Convert.FromJson<Data.ReturnedStatus>(json);
+        //            if (obj != null) return obj;
+        //        }
+        //    }
+
+        //    return null;
+        //}
     }
 }

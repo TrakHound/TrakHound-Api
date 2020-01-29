@@ -1,23 +1,21 @@
-﻿using System;
-// Copyright (c) 2020 TrakHound Inc., All Rights Reserved.
+﻿// Copyright (c) 2020 TrakHound Inc., All Rights Reserved.
 
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE.txt', which is part of this source code package.
 
 using RestSharp;
+using System;
 using System.Collections.Generic;
 
 namespace TrakHound.Api.v2.Requests
 {
-    public static class Parts
+    public class Processes
     {
-        /// <summary>
-        /// Request Alarms for a single device
-        /// </summary>
-        public static List<Data.Part> Get(string baseUrl, string deviceId, DateTime from, DateTime to, string accessToken = null)
+        public static List<Data.Process> Get(string baseUrl, string deviceId, string processType, DateTime from, DateTime to, string accessToken)
         {
             var client = new RestClient(baseUrl);
-            var request = new RestRequest(deviceId + "/parts", Method.GET);
+            var request = new RestRequest(deviceId + "/processes", Method.GET);
+            if (!string.IsNullOrEmpty(processType)) request.AddQueryParameter("type", processType);
             if (from > DateTime.MinValue) request.AddQueryParameter("from", from.ToString("o"));
             if (to > DateTime.MinValue) request.AddQueryParameter("to", to.ToString("o"));
             if (!string.IsNullOrEmpty(accessToken)) request.AddQueryParameter("access_token", accessToken);
@@ -28,21 +26,12 @@ namespace TrakHound.Api.v2.Requests
                 var json = response.Content;
                 if (!string.IsNullOrEmpty(json))
                 {
-                    var obj = Json.Convert.FromJson<List<Data.Part>>(json);
+                    var obj = Json.Convert.FromJson<List<Data.Process>>(json);
                     if (obj != null) return obj;
                 }
             }
 
             return null;
         }
-
-        #region "Overloads"
-
-        public static List<Data.Part> Get(string baseUrl, string deviceId, DateTime from)
-        {
-            return Get(baseUrl, deviceId, from, DateTime.MinValue);
-        }
-
-        #endregion
     }
 }

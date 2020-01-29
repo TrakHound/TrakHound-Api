@@ -12,7 +12,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>.NET Client library for accessing the TrakHound API. Access MTConnect data using TrakHound to view processed manufacturing data from CNC equipment.</description>
     <releaseNotes>Initial Release</releaseNotes>
-    <copyright>© 2017 TrakHound Inc., All Rights Reserved</copyright>
+    <copyright>© 2020 TrakHound Inc., All Rights Reserved</copyright>
     <tags>trakhound mtconnect cnc iiot</tags>
   </metadata>
 </package>

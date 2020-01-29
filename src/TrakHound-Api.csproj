@@ -39,6 +39,9 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+  <PropertyGroup>
+    <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\..\TrakHound-Community\src\packages\Newtonsoft.Json.10.0.1\lib\net40\Newtonsoft.Json.dll</HintPath>
@@ -70,10 +73,13 @@
     <Compile Include="v2\Authentication\User.cs" />
     <None Include="v2\Caching\CachedSample.cs" />
     <None Include="v2\Caching\SamplesCache.cs" />
+    <Compile Include="v2\Configurations\DatabaseConfiguration.cs" />
     <Compile Include="v2\Database.cs" />
     <Compile Include="v2\Data\ActivityEventItem.cs" />
+    <Compile Include="v2\Data\ActivityEventItemTrigger.cs" />
     <Compile Include="v2\Data\ActivityItem.cs" />
     <Compile Include="v2\Data\ActivityPathItem.cs" />
+    <Compile Include="v2\Data\ActivityStatistic.cs" />
     <Compile Include="v2\Data\Agent.cs" />
     <Compile Include="v2\Data\Alarm.cs" />
     <Compile Include="v2\Data\Asset.cs" />
@@ -84,6 +90,7 @@
     <Compile Include="v2\Data\Device.cs" />
     <Compile Include="v2\Data\Oee.cs" />
     <Compile Include="v2\Data\Part.cs" />
+    <Compile Include="v2\Data\Process.cs" />
     <Compile Include="v2\Data\Program.cs" />
     <Compile Include="v2\Data\ProgramEvent.cs" />
     <Compile Include="v2\Data\RejectedPart.cs" />
@@ -97,16 +104,19 @@
     <Compile Include="v2\Events\IEvaluator.cs" />
     <Compile Include="v2\Events\MultiTrigger.cs" />
     <Compile Include="v2\Events\Response.cs" />
+    <None Include="v2\Events\ResponseValue.cs" />
     <Compile Include="v2\Events\Trigger.cs" />
     <Compile Include="v2\Events\TriggerModifier.cs" />
     <Compile Include="v2\DataFilter.cs" />
     <Compile Include="v2\IAnalyticModule.cs" />
+    <Compile Include="v2\IConfigurationModule.cs" />
     <Compile Include="v2\IDatabaseModule.cs" />
     <Compile Include="v2\IRestModule.cs" />
     <Compile Include="v2\Json\Convert.cs" />
     <Compile Include="v2\Json\StreamDataConverter.cs" />
     <Compile Include="v2\Json\UnixTimeConverter.cs" />
     <Compile Include="v2\Lists.cs" />
+    <Compile Include="v2\Requests\Processes.cs" />
     <Compile Include="v2\Requests\Activity.cs" />
     <Compile Include="v2\Requests\Alarms.cs" />
     <Compile Include="v2\Requests\Connections.cs" />
@@ -140,7 +150,8 @@
     <PostBuildEvent>if exist $(ProjectDir)nuget.exe $(ProjectDir)nuget pack $(ProjectPath) -properties Configuration=Release</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PostBuildEvent>if exist $(ProjectDir)nuget.exe $(ProjectDir)nuget pack $(ProjectPath) -properties Configuration=Nuget</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

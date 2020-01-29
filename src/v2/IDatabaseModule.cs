@@ -1,10 +1,11 @@
-﻿// Copyright (c) 2017 TrakHound Inc., All Rights Reserved.
+﻿// Copyright (c) 2020 TrakHound Inc., All Rights Reserved.
 
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE.txt', which is part of this source code package.
 
 using System;
 using System.Collections.Generic;
+using TrakHound.Api.v2.Configurations;
 using TrakHound.Api.v2.Data;
 
 namespace TrakHound.Api.v2
@@ -19,13 +20,24 @@ namespace TrakHound.Api.v2
         /// </summary>
         string Name { get; }
 
-        bool Initialize(string databaseConfigurationPath);
+        bool Initialize(DatabaseConfiguration config);
 
         void Close();
 
-        #region "Read"
+        /// <summary>
+        /// Execute a custom query and return whether the query was successful
+        /// </summary>
+        bool ExecuteQuery(string query, int timeout = 0);
 
-        List<T> ExecuteQuery<T>(string query);
+        /// <summary>
+        /// Execute a custom query and return an object of the specified type
+        /// </summary>
+        T Read<T>(string query, int timeout = 0);
+
+        /// <summary>
+        /// Execute a custom query and return a List of objects of the specified type
+        /// </summary>
+        List<T> ReadList<T>(string query, int timeout = 0);
 
         /// <summary>
         /// Read all of the Connections available from the DataServer
@@ -65,96 +77,16 @@ namespace TrakHound.Api.v2
         /// <summary>
         /// Read Samples from the database
         /// </summary>
-        List<Sample> ReadSamples(string[] dataItemIds, string deviceId, DateTime from, DateTime to, DateTime at, long count, bool includeCurrent = true);
-
-        /// <summary>
-        /// Read RejectedParts from the database
-        /// </summary>
-        List<RejectedPart> ReadRejectedParts(string deviceId, string[] partIds, DateTime from, DateTime to, DateTime at);
-
-        /// <summary>
-        /// Read Verified from the database
-        /// </summary>
-        List<VerifiedPart> ReadVerifiedParts(string deviceId, string[] partIds, DateTime from, DateTime to, DateTime at);
+        List<Sample> ReadSamples(string[] dataItemIds, string deviceId, DateTime from, DateTime to, DateTime at, long count, bool includeCurrent);
 
         /// <summary>
         /// Read the Status from the database
         /// </summary>
         Status ReadStatus(string deviceId);
 
-        #endregion
 
-        #region "Write"
+        bool UpdateSetting(string name, string value);
 
-        /// <summary>
-        /// Write ConnectionDefintions to the database
-        /// </summary>
-        bool Write(List<ConnectionDefinition> definitions);
-
-        /// <summary>
-        /// Write AgentDefintions to the database
-        /// </summary>
-        bool Write(List<AgentDefinition> definitions);
-
-        /// <summary>
-        /// Write AssetDefintions to the database
-        /// </summary>
-        bool Write(List<AssetDefinition> definitions);
-
-        /// <summary>
-        /// Write ComponentDefintions to the database
-        /// </summary>
-        bool Write(List<ComponentDefinition> definitions);
-
-        /// <summary>
-        /// Write DataItemDefintions to the database
-        /// </summary>
-        bool Write(List<DataItemDefinition> definitions);
-
-        /// <summary>
-        /// Write DeviceDefintions to the database
-        /// </summary>
-        bool Write(List<DeviceDefinition> definitions);
-
-        /// <summary>
-        /// Write Samples to the database
-        /// </summary>
-        bool WriteArchivedSamples(List<Sample> samples);
-
-        /// <summary>
-        /// Write Samples to the database
-        /// </summary>
-        bool WriteCurrentSamples(List<Sample> samples);
-
-        /// <summary>
-        /// Write RejectedParts to the database
-        /// </summary>
-        bool Write(List<RejectedPart> parts);
-
-        /// <summary>
-        /// Write VerifiedParts to the database
-        /// </summary>
-        bool Write(List<VerifiedPart> parts);
-
-        /// <summary>
-        /// Write Statuses to the database
-        /// </summary>
-        bool Write(List<Status> statuses);
-
-        #endregion
-
-        #region "Delete"
-
-        /// <summary>
-        /// Delete Rejected Part from the database
-        /// </summary>
-        bool DeleteRejectedPart(string deviceId, string partId);
-
-        /// <summary>
-        /// Delete Verified Part from the database
-        /// </summary>
-        bool DeleteVerifiedPart(string deviceId, string partId);
-
-        #endregion
+        string ReadSetting(string name);
     }
 }

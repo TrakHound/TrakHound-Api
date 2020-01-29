@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2017 TrakHound Inc., All Rights Reserved.
+﻿// Copyright (c) 2020 TrakHound Inc., All Rights Reserved.
 
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE.txt', which is part of this source code package.
@@ -10,8 +10,8 @@ using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.IO;
 using System.Reflection;
+using TrakHound.Api.v2.Configurations;
 using TrakHound.Api.v2.Data;
-using TrakHound.Api.v2.Streams.Data;
 
 namespace TrakHound.Api.v2
 {
@@ -19,42 +19,39 @@ namespace TrakHound.Api.v2
     {
         private static Logger log = LogManager.GetCurrentClassLogger();
 
+        public static bool Verbose = true;
+
         /// <summary>
         /// The currently loaded IDatabaseModule
         /// </summary>
         public static IDatabaseModule Module;
 
+        /// <summary>
+        /// The currently loaded DatabaseConfiguration
+        /// </summary>
+        public static DatabaseConfiguration Configuration { get; set; }
 
-        public static bool Initialize(string configurationPath, string modulesDirectory = null)
+        public static string ConnectionString { get; set; }
+
+        public static bool Initialize(DatabaseConfiguration config)
         {
             var assemblyDir = Path.GetDirectoryName(Assembly.GetCallingAssembly().Location);
-            var path = configurationPath;
-            if (!Path.IsPathRooted(path)) path = Path.Combine(assemblyDir, configurationPath);
-
-            if (!string.IsNullOrEmpty(path))
+            if (config != null && !string.IsNullOrEmpty(assemblyDir))
             {
-                log.Info("Reading Database Configuration File From '" + path + "'");
+                if (Verbose) log.Info("Reading Database Modules From '" + assemblyDir + "'");
 
-                var modulesDir = assemblyDir;
-                if (!string.IsNullOrEmpty(modulesDirectory))
-                {
-                    modulesDir = modulesDirectory;
-                    if (!Path.IsPathRooted(modulesDir)) modulesDir = Path.Combine(assemblyDir, modulesDir);
-                }
-
-                log.Info("Reading Database Modules From '" + modulesDir + "'");
-
-                var modules = FindModules(modulesDir);
+                var modules = FindModules(assemblyDir);
                 if (modules != null)
                 {
                     foreach (var module in modules)
                     {
                         try
                         {
-                            if (module.Initialize(path))
+                            if (module.Initialize(config))
                             {
-                                log.Info(module.Name + " Database Module Initialize Successfully");
+                                if (Verbose) log.Info(module.Name + " Database Module Initialize Successfully");
                                 Module = module;
+                                Configuration = config;
                                 return true;
                             }
                         }
@@ -155,11 +152,43 @@ namespace TrakHound.Api.v2
 
         #endregion
 
+        #region "Settings"
+
+        public static bool UpdateSetting(string name, string value)
+        {
+            if (Module != null) return Module.UpdateSetting(name, value);
+
+            return false;
+        }
+
+        public static string ReadSetting(string name)
+        {
+            if (Module != null) return Module.ReadSetting(name);
+
+            return null;
+        }
+
+        #endregion
+
         #region "Read"
 
-        public static List<T> ExecuteQuery<T>(string query)
+        public static bool ExecuteQuery(string query)
         {
-            if (Module != null) return Module.ExecuteQuery<T>(query);
+            if (Module != null) return Module.ExecuteQuery(query);
+
+            return false;
+        }
+
+        public static T Read<T>(string query)
+        {
+            if (Module != null) return Module.Read<T>(query);
+
+            return default(T);
+        }
+
+        public static List<T> ReadList<T>(string query)
+        {
+            if (Module != null) return Module.ReadList<T>(query);
 
             return null;
         }
@@ -245,26 +274,6 @@ namespace TrakHound.Api.v2
         }
 
         /// <summary>
-        /// Read RejectedParts from the database
-        /// </summary>
-        public static List<RejectedPart> ReadRejectedParts(string deviceId, string[] partIds, DateTime from, DateTime to, DateTime at)
-        {
-            if (Module != null) return Module.ReadRejectedParts(deviceId, partIds, from, to, at);
-
-            return null;
-        }
-
-        /// <summary>
-        /// Read VerifiedParts from the database
-        /// </summary>
-        public static List<VerifiedPart> ReadVerifiedParts(string deviceId, string[] partIds, DateTime from, DateTime to, DateTime at)
-        {
-            if (Module != null) return Module.ReadVerifiedParts(deviceId, partIds, from, to, at);
-
-            return null;
-        }
-
-        /// <summary>
         /// Read the Status from the database
         /// </summary>
         public static Status ReadStatus(string deviceId)
@@ -272,144 +281,6 @@ namespace TrakHound.Api.v2
             if (Module != null) return Module.ReadStatus(deviceId);
 
             return null;
-        }
-
-        #endregion
-
-        #region "Write"
-
-        /// <summary>
-        /// Write ConnectionDefinitions to the database
-        /// </summary>
-        public static bool Write(List<ConnectionDefinition> definitions)
-        {
-            if (Module != null) return Module.Write(definitions);
-
-            return false;
-        }
-
-        /// <summary>
-        /// Write AgentDefintions to the database
-        /// </summary>
-        public static bool Write(List<AgentDefinition> definitions)
-        {
-            if (Module != null) return Module.Write(definitions);
-
-            return false;
-        }
-
-        /// <summary>
-        /// Write AssetDefintions to the database
-        /// </summary>
-        public static bool Write(List<AssetDefinition> definitions)
-        {
-            if (Module != null) return Module.Write(definitions);
-
-            return false;
-        }
-
-        /// <summary>
-        /// Write ComponentDefintions to the database
-        /// </summary>
-        public static bool Write(List<ComponentDefinition> definitions)
-        {
-            if (Module != null) return Module.Write(definitions);
-
-            return false;
-        }
-
-        /// <summary>
-        /// Write DataItemDefintions to the database
-        /// </summary>
-        public static bool Write(List<DataItemDefinition> definitions)
-        {
-            if (Module != null) return Module.Write(definitions);
-
-            return false;
-        }
-
-        /// <summary>
-        /// Write DeviceDefintions to the database
-        /// </summary>
-        public static bool Write(List<DeviceDefinition> definitions)
-        {
-            if (Module != null) return Module.Write(definitions);
-
-            return false;
-        }
-
-        /// <summary>
-        /// Write Samples to the database
-        /// </summary>
-        public static bool WriteArchivedSamples(List<Sample> samples)
-        {
-            if (Module != null) return Module.WriteArchivedSamples(samples);
-
-            return false;
-        }
-
-        /// <summary>
-        /// Write Samples to the database
-        /// </summary>
-        public static bool WriteCurrentSamples(List<Sample> samples)
-        {
-            if (Module != null) return Module.WriteCurrentSamples(samples);
-
-            return false;
-        }
-
-        /// <summary>
-        /// Write RejectedParts to the database
-        /// </summary>
-        public static bool Write(List<RejectedPart> parts)
-        {
-            if (Module != null) return Module.Write(parts);
-
-            return false;
-        }
-
-        /// <summary>
-        /// Write VerifiedParts to the database
-        /// </summary>
-        public static bool Write(List<VerifiedPart> parts)
-        {
-            if (Module != null) return Module.Write(parts);
-
-            return false;
-        }
-
-        /// <summary>
-        /// Write Statuses to the database
-        /// </summary>
-        public static bool Write(List<Status> statuses)
-        {
-            if (Module != null) return Module.Write(statuses);
-
-            return false;
-        }
-
-        #endregion
-
-        #region "Delete"
-
-        /// <summary>
-        /// Delete RejectedPart from the database
-        /// </summary>
-        public static bool DeleteRejectedPart(string deviceId, string partId)
-        {
-            if (Module != null) return Module.DeleteRejectedPart(deviceId, partId);
-
-            return false;
-        }
-
-        /// <summary>
-        /// Delete VerifiedPart from the database
-        /// </summary>
-        public static bool DeleteVerifiedPart(string deviceId, string partId)
-        {
-            if (Module != null) return Module.DeleteVerifiedPart(deviceId, partId);
-
-            return false;
         }
 
         #endregion
